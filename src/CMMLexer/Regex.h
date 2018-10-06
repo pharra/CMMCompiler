@@ -11,14 +11,14 @@
 
 class Regex {
 private:
-    static std::regex *regexNum;
-    static std::regex *regexIdentifier;
+    std::regex regexNum = std::regex("[a-zA-Z_][a-zA-Z0-9_]*");
+    std::regex regexIdentifier = std::regex(R"((\-|\+)?(0)?[1-9]*(\.[\d]+)?)");
 public:
 
 
-    static bool isIdentifier(std::string value);
+    bool isIdentifier(std::string value);
 
-    static bool isNum(std::string value);
+    bool isNum(std::string value);
 };
 
 #endif //CMMCOMPILER_REGEX_H
