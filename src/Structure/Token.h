@@ -7,15 +7,50 @@
 
 #include <string>
 
-enum tokenTag {
-    NUM, KEYWORD, IDENTIFIER, OPERATOR, ANNOTATION, END
+enum TokenTag {
+    UNDEFINED,
+    ENDFILE, ERROR, END,
+    // identifier
+    IDENTIFIER,
+    // number
+    NUM,
+    // keyword
+    IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL,
+    BREAK, SWITCH, CASE, RETURN,
+    // operator
+    // +
+    PLUS,
+    // -
+    MINUS,
+    // *
+    MUL,
+    // /
+    DIV,
+    // %
+    MOD,
+    // = < <= > >= == <>
+    ASSIGN, LES, LES_EQL, GRT, GRT_EQL, EQL, NOT_EQL,
+    // separator
+    // ( )
+    LEFT_BRA, RIGHT_BRA,
+    // [ ]
+    LEFT_INDEX, RIGHT_INDEX,
+    // { }
+    LEFT_BOUNDER, RIGHT_BOUNDER,
+    // . , ; ' "
+    POINTER, COMMA, SEMI, SIN_QUE, DOU_QUE,
+    // annotation
+    // //
+    LINE_NOTE,
+    // /* */
+    MUL_NOTE
 };
 
 class Token {
 private:
 
     /* token类型 */
-    tokenTag tag;
+    TokenTag tag;
 
     /* token内容 */
     std::string value;
@@ -34,9 +69,9 @@ public:
      * @param l token所在行
      * @param c token所在列
      */
-    Token(tokenTag t, std::string v, int l, int c);
+    Token(TokenTag t, std::string v, int l, int c);
 
-    tokenTag getTag() const;
+    TokenTag getTag() const;
 
     const std::string &getValue() const;
 

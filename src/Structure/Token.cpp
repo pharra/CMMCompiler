@@ -6,14 +6,14 @@
 
 #include "Token.h"
 
-Token::Token(tokenTag t, std::string v, int l, int c) {
+Token::Token(TokenTag t, std::string v, int l, int c) {
     tag = t;
     value = std::move(v);
     line = l;
     column = c;
 }
 
-tokenTag Token::getTag() const {
+TokenTag Token::getTag() const {
     return tag;
 }
 
