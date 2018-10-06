@@ -9,6 +9,8 @@
 #include <fstream>
 #include <iostream>
 
+#define END_CHAR (char)(-1)
+
 class Reader {
 private:
     std::string filePath;
@@ -16,7 +18,9 @@ private:
 public:
     explicit Reader(std::string path);
 
-    std::string getNextChar();
+    char getNextChar();
+
+    void setBack();
 
     ~Reader();
 };
