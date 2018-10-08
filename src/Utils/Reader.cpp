@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // Created by WF on 2018/9/6.
 //
@@ -7,32 +5,24 @@
 #include "Reader.h"
 
 Reader::Reader(std::string path) {
+    std::ifstream file;
     filePath = std::move(path);
+    file = std::ifstream(filePath);
     if (!file.is_open()) {
-        file = std::ifstream(filePath);
+        std::cout << "Error opening file";
     }
+    fileContent = std::string((std::istreambuf_iterator<char>(file)),
+                    std::istreambuf_iterator<char>());
+    file.close();
 }
 
 char Reader::getNextChar() {
-    char cur = END_CHAR;
-    if (!file.is_open()) {
-        std::cout << "Error opening file";
-        return cur;
+    if(cur > fileContent.size()){
+        return END_CHAR;
     }
-    if (!file.eof()) {
-        // 不跳过空格
-        file.get(cur);
-    }
-    return cur;
-}
-
-Reader::~Reader() {
-    if (file.is_open()) {
-        file.close();
-    }
+    return fileContent[cur++];
 }
 
 void Reader::setBack() {
-    long long int m = file.tellg();
-    file.seekg(m -1);
+    cur--;
 }

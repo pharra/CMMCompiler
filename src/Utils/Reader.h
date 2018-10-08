@@ -14,7 +14,8 @@
 class Reader {
 private:
     std::string filePath;
-    std::ifstream file;
+    std::string fileContent;
+    int cur = 0;
 public:
     explicit Reader(std::string path);
 
@@ -22,7 +23,6 @@ public:
 
     void setBack();
 
-    ~Reader();
 };
 
 
