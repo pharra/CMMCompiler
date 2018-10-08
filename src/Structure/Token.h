@@ -75,7 +75,7 @@ private:
                                                    {MUL,           "MUL"},
                                                    {DIV,           "DIV"},
                                                    {MOD,           "MOD"},
-                                                   {ASSIGN,        "ASSIGN,"},
+                                                   {ASSIGN,        "ASSIGN"},
                                                    {LES,           "LES"},
                                                    {LES_EQL,       "LES_EQL"},
                                                    {GRT,           "GRT"},
