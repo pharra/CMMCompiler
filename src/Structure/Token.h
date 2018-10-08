@@ -6,17 +6,19 @@
 #define CMMCOMPILER_TOKEN_H
 
 #include <string>
+#include <map>
 
 enum TokenTag {
-    UNDEFINED,
-    ENDFILE, ERROR, END,
+    UNDEFINED = 0,
+    ERROR, END,
     // identifier
     IDENTIFIER,
     // number
     NUM,
     // keyword
-    IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL,
-    BREAK, SWITCH, CASE, RETURN,
+    // IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL,
+    // BREAK, SWITCH, CASE, RETURN,
+    KEYWORD,
     // operator
     // +
     PLUS,
@@ -46,6 +48,8 @@ enum TokenTag {
     MUL_NOTE
 };
 
+
+
 class Token {
 private:
 
@@ -61,6 +65,20 @@ private:
     /* token所在列 */
     int column;
 
+    std::map<TokenTag, std::string> tokenTagMap = {{UNDEFINED,"UNDEFINED"},
+                                                   {ERROR,"ERROR"},{END,"END"},
+                                                   {IDENTIFIER,"IDENTIFIER"},
+                                                   {NUM,"NUM"},
+                                                   {KEYWORD,"KEYWORD"},
+                                                   {PLUS,"PLUS"},{MINUS,"MINUS"},{MUL,"MUL"},{DIV,"DIV"},{MOD,"MOD"},
+                                                   {ASSIGN,"ASSIGN,"},{LES,"LES"},{LES_EQL,"LES_EQL"},{GRT,"GRT"},{GRT_EQL,"GRT_EQL"},{EQL,"EQL"},{NOT_EQL,"NOT_EQL"},
+                                                   {LEFT_BRA,"LEFT_BRA"},{RIGHT_BRA,"RIGHT_BRA"},
+                                                   {LEFT_INDEX,"LEFT_INDEX"},{RIGHT_INDEX,"RIGHT_INDEX"},
+                                                   {LEFT_BOUNDER,"LEFT_BOUNDER"},{RIGHT_BOUNDER,"RIGHT_BOUNDER"},
+                                                   {COMMA,"COMMA"},{SEMI,"SEMI"},{SIN_QUE,"SIN_QUE"},{DOU_QUE,"DOU_QUE"},
+                                                   {LINE_NOTE,"LINE_NOTE"},
+                                                   {MUL_NOTE,"MUL_NOTE"}
+    };
 public:
     /**
      * 构造token
@@ -72,6 +90,8 @@ public:
     Token(TokenTag t, std::string v, int l, int c);
 
     TokenTag getTag() const;
+
+    std::string getTagName() const;
 
     const std::string &getValue() const;
 

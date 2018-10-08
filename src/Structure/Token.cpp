@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // Created by WF on 2018/9/6.
 //
@@ -27,4 +25,8 @@ int Token::getLine() const {
 
 int Token::getColumn() const {
     return column;
+}
+
+std::string Token::getTagName() const {
+    return tokenTagMap.find(tag)->second;
 }
