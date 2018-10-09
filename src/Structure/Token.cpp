@@ -1,14 +1,17 @@
+#include <utility>
+
 //
 // Created by WF on 2018/9/6.
 //
 
 #include "Token.h"
 
-Token::Token(TokenTag t, std::string v, int l, int c) {
+Token::Token(TokenTag t, std::string v, int l, int c, std::string error) {
     tag = t;
     value = std::move(v);
     line = l;
     column = c;
+    errorMessage = std::move(error);
 }
 
 TokenTag Token::getTag() const {
@@ -30,3 +33,8 @@ int Token::getColumn() const {
 std::string Token::getTagName() const {
     return tokenTagMap.find(tag)->second;
 }
+
+const std::string &Token::getErrorMessage() const {
+    return errorMessage;
+}
+

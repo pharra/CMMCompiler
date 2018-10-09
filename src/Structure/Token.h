@@ -64,6 +64,9 @@ private:
     /* token所在列 */
     int column;
 
+    /* token错误信息*/
+    std::string errorMessage;
+
     std::map<TokenTag, std::string> tokenTagMap = {{UNDEFINED,     "UNDEFINED"},
                                                    {ERROR,         "ERROR"},
                                                    {END,           "END"},
@@ -102,8 +105,9 @@ public:
      * @param v token内容
      * @param l token所在行
      * @param c token所在列
+     * @param error 错误信息
      */
-    Token(TokenTag t, std::string v, int l, int c);
+    Token(TokenTag t, std::string v, int l, int c, std::string error);
 
     TokenTag getTag() const;
 
@@ -114,6 +118,8 @@ public:
     int getLine() const;
 
     int getColumn() const;
+
+    const std::string &getErrorMessage() const;
 };
 
 
