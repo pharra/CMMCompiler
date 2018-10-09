@@ -1,5 +1,3 @@
-#include <utility>
-
 //
 // Created by WF on 2018/9/7.
 //
@@ -19,6 +17,7 @@ typedef enum {
 
 Lexer::Lexer(std::string filePath) {
     reader = new Reader(std::move(filePath));
+    regex = new Regex();
     keywordSet.insert("if");
     keywordSet.insert("else");
     keywordSet.insert("while");
@@ -38,7 +37,7 @@ Token Lexer::getNext() {
     while (stateType != DONE) {
         currentChar = reader->getNextChar();
         column += 1;
-        if (currentChar == ENDCHAR) {
+        if (currentChar == END_CHAR) {
             stateType = DONE;
             if (tokenTag == UNDEFINED) {
                 tokenTag = END;
@@ -214,14 +213,17 @@ Token Lexer::getNext() {
                 value.append(1, currentChar);
             }
             continue;
-        } else{
+        } else {
             stateType = DONE;
+            reader->setBack();
         }
 
 
     }
     if (tokenTag == IDENTIFIER) {
-
+        if(keywordSet.find(value) != keywordSet.end()){
+            tokenTag = KEYWORD;
+        }
     }
     return Token(tokenTag, value, currentLine, currentColumn);
 
@@ -230,5 +232,7 @@ Token Lexer::getNext() {
 Lexer::~Lexer() {
     delete reader;
     reader = nullptr;
+    delete regex;
+    regex = nullptr;
 }
 

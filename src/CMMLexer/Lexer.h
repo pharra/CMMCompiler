@@ -19,7 +19,7 @@ private:
     std::set<std::string> keywordSet;
     char currentChar;
     std::string specialChar = "+-*/(){}[]!=<>,;";
-
+    Regex *regex;
 
 
 public:
