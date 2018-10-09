@@ -5,11 +5,11 @@
 
 #include "Regex.h"
 
-bool Regex::isIdentifier(std::string value) {
-    return regex_match(value, regexIdentifier);
+bool Regex::isIdentifier(const std::string value) {
+    return std::regex_match(value, regexIdentifier);
 }
 
-bool Regex::isNum(std::string value) {
-    return regex_match(value, regexNum);
+bool Regex::isNum(const std::string value) {
+    return std::regex_match(value, regexNum);
 }
 

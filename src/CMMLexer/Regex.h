@@ -11,8 +11,8 @@
 
 class Regex {
 private:
-    std::regex regexNum = std::regex("[a-zA-Z_][a-zA-Z0-9_]*");
-    std::regex regexIdentifier = std::regex(R"((\-|\+)?(0)?[1-9]*(\.[\d]+)?)");
+    std::regex regexIdentifier = std::regex("[a-zA-Z_][a-zA-Z0-9_]*");
+    std::regex regexNum = std::regex(R"((\-|\+)?(0)?[1-9]*(\.[\d]+)?)");
 public:
 
 
