@@ -34,6 +34,7 @@ Token Lexer::getNext() {
     int currentColumn = column;
     int currentLine = line;
     std::string value = std::string();
+    std::string errorMessage = std::string();
     while (stateType != DONE) {
         currentChar = reader->getNextChar();
         column += 1;
@@ -221,11 +222,23 @@ Token Lexer::getNext() {
 
     }
     if (tokenTag == IDENTIFIER) {
-        if(keywordSet.find(value) != keywordSet.end()){
+        if (keywordSet.find(value) != keywordSet.end()) {
             tokenTag = KEYWORD;
         }
+
+        if (!regex->isIdentifier(value)) {
+            errorMessage = "ILLEGAL_IDENTIFIER";
+            tokenTag = ERROR;
+        }
     }
-    return Token(tokenTag, value, currentLine, currentColumn);
+
+    if (tokenTag == NUM) {
+        if (!regex->isNum(value)) {
+            errorMessage = "ILLEGAL_NUMBER";
+            tokenTag = ERROR;
+        }
+    }
+    return Token(tokenTag, value, currentLine, currentColumn, errorMessage);
 
 }
 
