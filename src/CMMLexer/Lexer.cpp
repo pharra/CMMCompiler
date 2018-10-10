@@ -15,9 +15,15 @@ typedef enum {
 
 #include "Lexer.h"
 
+/**
+ * 初始化Lexer
+ * @param filePath 文件路径
+ */
 Lexer::Lexer(std::string filePath) {
     reader = new Reader(std::move(filePath));
     regex = new Regex();
+
+    // 初始化关键字set
     keywordSet.insert("if");
     keywordSet.insert("else");
     keywordSet.insert("while");
@@ -28,6 +34,10 @@ Lexer::Lexer(std::string filePath) {
     keywordSet.insert("real");
 }
 
+/**
+ * 获取下一个token
+ * @return Token
+ */
 Token Lexer::getNext() {
     StateType stateType = START;
     TokenTag tokenTag = UNDEFINED;
@@ -35,9 +45,15 @@ Token Lexer::getNext() {
     int currentLine = line;
     std::string value = std::string();
     std::string errorMessage = std::string();
+
+    // 获取下一个token
     while (stateType != DONE) {
+
+        //读取下一个字符
         currentChar = reader->getNextChar();
         column += 1;
+
+        // 如果到了文件末
         if (currentChar == END_CHAR) {
             stateType = DONE;
             if (tokenTag == UNDEFINED) {
@@ -47,6 +63,8 @@ Token Lexer::getNext() {
             }
             continue;
         }
+
+        // 忽略行注释
         if (stateType == IGNORE && tokenTag == LINE_NOTE) {
             if (currentChar == '\n') {
                 line += 1;
@@ -56,6 +74,7 @@ Token Lexer::getNext() {
             continue;
         }
 
+        // 忽略段注释
         if (stateType == IGNORE && tokenTag == MUL_NOTE) {
             if (currentChar != '*') {
                 if (currentChar == '\n') {
@@ -71,6 +90,9 @@ Token Lexer::getNext() {
             }
             continue;
         }
+
+
+        // 忽略空格和\t
         if (currentChar == ' ' || currentChar == '\t') {
             if (tokenTag != UNDEFINED) {
                 stateType = DONE;
@@ -80,18 +102,20 @@ Token Lexer::getNext() {
             continue;
         }
 
+        // 处理换行符
         if (currentChar == '\n') {
+            line += 1;
+            column = 1;
             if (tokenTag != UNDEFINED) {
                 stateType = DONE;
             } else {
-                line += 1;
-                column = 1;
                 currentLine = line;
                 currentColumn = column;
             }
             continue;
         }
 
+        // 处理token第一个字符
         if (tokenTag == UNDEFINED) {
             if (currentChar == '[') {
                 tokenTag = LEFT_INDEX;
@@ -154,7 +178,9 @@ Token Lexer::getNext() {
                 tokenTag = IDENTIFIER;
             }
             value.append(1, currentChar);
-        } else if (tokenTag == ASSIGN) {
+        }
+            // 处理双字符运输符
+        else if (tokenTag == ASSIGN) {
             if (currentChar == '=') {
                 tokenTag = EQL;
                 stateType = DONE;
@@ -198,7 +224,9 @@ Token Lexer::getNext() {
                 stateType = DONE;
                 reader->setBack();
             }
-        } else if (tokenTag == NUM) {
+        }
+            // 处理数字
+        else if (tokenTag == NUM) {
             if (specialChar.find(currentChar) != -1) {
                 stateType = DONE;
                 reader->setBack();
@@ -206,7 +234,9 @@ Token Lexer::getNext() {
                 value.append(1, currentChar);
                 continue;
             }
-        } else if (tokenTag == IDENTIFIER) {
+        }
+            // 处理标识符
+        else if (tokenTag == IDENTIFIER) {
             if (specialChar.find(currentChar) != -1) {
                 stateType = DONE;
                 reader->setBack();
@@ -221,6 +251,9 @@ Token Lexer::getNext() {
 
 
     }
+
+
+    // 判断标识符是否是关键字，是否是正确的标识符格式
     if (tokenTag == IDENTIFIER) {
         if (keywordSet.find(value) != keywordSet.end()) {
             tokenTag = KEYWORD;
@@ -232,6 +265,7 @@ Token Lexer::getNext() {
         }
     }
 
+    // 判断是否是正确的数字格式
     if (tokenTag == NUM) {
         if (!regex->isNum(value)) {
             errorMessage = "ILLEGAL_NUMBER";

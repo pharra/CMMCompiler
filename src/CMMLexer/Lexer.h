@@ -16,9 +16,15 @@ private:
     Reader *reader;
     int column = 1;
     int line = 1;
+
+    // 识别关键字
     std::set<std::string> keywordSet;
     char currentChar;
+
+    // 识别分割符
     std::string specialChar = "+-*/(){}[]!=<>,;";
+
+    // 用于正则匹配
     Regex *regex;
 
 
