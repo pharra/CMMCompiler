@@ -2,5 +2,11 @@
 //ccc
 int b = 111;
 
-c. a = 1.1;
-int b = 3c;
+c. a=-1.1;
+int ev = (3c);
+bool d = 0;
+d = {[(a + c)]};
+a==c;
+a <> c;
+a >= c;
+c <= c;

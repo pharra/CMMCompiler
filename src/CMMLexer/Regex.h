@@ -15,7 +15,6 @@ private:
     std::regex regexNum = std::regex(R"((\-|\+)?(0)?[1-9]*(\.[\d]+)?)");
 public:
 
-
     bool isIdentifier(std::string value);
 
     bool isNum(std::string value);

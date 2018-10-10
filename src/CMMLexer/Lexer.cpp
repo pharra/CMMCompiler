@@ -179,7 +179,7 @@ Token Lexer::getNext() {
             }
             value.append(1, currentChar);
         }
-            // 处理双字符运输符
+            // 处理双字符运算符
         else if (tokenTag == ASSIGN) {
             if (currentChar == '=') {
                 tokenTag = EQL;
