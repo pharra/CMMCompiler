@@ -11,7 +11,7 @@ int main(int argc, char *argv[]) {
     Lexer lexer = Lexer(argv[1]);
     Token token = lexer.getNext();
     while (token.getTag() != END) {
-        std::cout << "<Line:" << token.getLine() << ", Column:" << token.getColumn() << ", " <<token.getTagName() << ", " <<token.getValue() << ">\n";
+        std::cout << "<Line:" << token.getLine() << ", Column:" << token.getColumn() << ", " <<token.getTagName() << ", " <<token.getValue() << " " << token.getErrorMessage() << ">\n";
         token = lexer.getNext();
     }
     return 0;
