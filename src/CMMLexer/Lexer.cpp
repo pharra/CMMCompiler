@@ -53,16 +53,6 @@ Token Lexer::getNext() {
         currentChar = reader->getNextChar();
         column += 1;
 
-        // 如果到了文件末
-        if (currentChar == END_CHAR) {
-            stateType = DONE;
-            if (tokenTag == UNDEFINED) {
-                tokenTag = END;
-            } else {
-                reader->setBack();
-            }
-            continue;
-        }
 
         // 忽略行注释
         if (stateType == IGNORE && tokenTag == LINE_NOTE) {
@@ -76,6 +66,11 @@ Token Lexer::getNext() {
 
         // 忽略段注释
         if (stateType == IGNORE && tokenTag == MUL_NOTE) {
+            if (currentChar == END_CHAR) {
+                errorMessage = "EXPECTED RIGHT_MUL_NOTE(*/) ";
+                tokenTag = ERROR;
+                stateType = DONE;
+            }
             if (currentChar != '*') {
                 if (currentChar == '\n') {
                     line += 1;
@@ -91,6 +86,17 @@ Token Lexer::getNext() {
             continue;
         }
 
+
+        // 如果到了文件末
+        if (currentChar == END_CHAR) {
+            stateType = DONE;
+            if (tokenTag == UNDEFINED) {
+                tokenTag = END;
+            } else {
+                reader->setBack();
+            }
+            continue;
+        }
 
         // 忽略空格和\t
         if (currentChar == ' ' || currentChar == '\t') {
