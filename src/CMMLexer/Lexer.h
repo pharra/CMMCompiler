@@ -10,15 +10,13 @@
 #include "Structure/Token.h"
 #include <set>
 #include "Regex.h"
+#include <map>
 
 class Lexer {
 private:
     Reader *reader;
     int column = 1;
     int line = 1;
-
-    // 识别关键字
-    std::set<std::string> keywordSet;
     char currentChar;
 
     // 识别分割符
@@ -27,13 +25,15 @@ private:
     // 用于正则匹配
     Regex *regex;
 
-
 public:
     explicit Lexer(std::string filePath);
 
-    Token * getNext();
+    Token *getNext();
 
     ~Lexer();
+
+    // 识别关键字
+    static std::map<std::string, TokenTag> keywordMap;
 };
 
 

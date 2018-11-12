@@ -7,13 +7,26 @@
 // 分隔符：(、)、{、}、[、]、,、;
 // 注释符：//、/*、*/
 
+#include "Lexer.h"
+
+
+std::map<std::string, TokenTag> Lexer::keywordMap = {{"if",     IF},
+                                              {"else",   ELSE},
+                                              {"while",  WHILE},
+                                              {"for",    FOR},
+                                              {"read",   READ},
+                                              {"write",  WRITE},
+                                              {"int",    INT},
+                                              {"real",   REAL},
+                                              {"break",  BREAK},
+                                              {"switch", SWITCH},
+                                              {"case",   CASE},
+                                              {"return", RETURN}};
 typedef enum {
     START,
     IGNORE,
     DONE
 } StateType;
-
-#include "Lexer.h"
 
 /**
  * 初始化Lexer
@@ -22,23 +35,13 @@ typedef enum {
 Lexer::Lexer(std::string filePath) {
     reader = new Reader(std::move(filePath));
     regex = new Regex();
-
-    // 初始化关键字set
-    keywordSet.insert("if");
-    keywordSet.insert("else");
-    keywordSet.insert("while");
-    keywordSet.insert("for");
-    keywordSet.insert("read");
-    keywordSet.insert("write");
-    keywordSet.insert("int");
-    keywordSet.insert("real");
 }
 
 /**
  * 获取下一个token
  * @return Token *
  */
-Token * Lexer::getNext() {
+Token *Lexer::getNext() {
     StateType stateType = START;
     TokenTag tokenTag = UNDEFINED;
     int currentColumn = column;
@@ -261,8 +264,8 @@ Token * Lexer::getNext() {
 
     // 判断标识符是否是关键字，是否是正确的标识符格式
     if (tokenTag == IDENTIFIER) {
-        if (keywordSet.find(value) != keywordSet.end()) {
-            tokenTag = KEYWORD;
+        if (keywordMap.find(value) != keywordMap.end()) {
+            tokenTag = keywordMap.find(value)->second;
         }
 
         if (!regex->isIdentifier(value)) {

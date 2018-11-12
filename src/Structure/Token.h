@@ -16,9 +16,7 @@ enum TokenTag {
     // number
             NUM,
     // keyword
-    // IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL,
-    // BREAK, SWITCH, CASE, RETURN,
-            KEYWORD,
+            KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, BREAK, SWITCH, CASE, RETURN,
     // operator
     // +
             PLUS,
@@ -67,37 +65,7 @@ private:
     /* token错误信息*/
     std::string errorMessage;
 
-    std::map<TokenTag, std::string> tokenTagMap = {{UNDEFINED,     "UNDEFINED"},
-                                                   {ERROR,         "ERROR"},
-                                                   {END,           "END"},
-                                                   {IDENTIFIER,    "IDENTIFIER"},
-                                                   {NUM,           "NUM"},
-                                                   {KEYWORD,       "KEYWORD"},
-                                                   {PLUS,          "PLUS"},
-                                                   {MINUS,         "MINUS"},
-                                                   {MUL,           "MUL"},
-                                                   {DIV,           "DIV"},
-                                                   {MOD,           "MOD"},
-                                                   {ASSIGN,        "ASSIGN"},
-                                                   {LES,           "LES"},
-                                                   {LES_EQL,       "LES_EQL"},
-                                                   {GRT,           "GRT"},
-                                                   {GRT_EQL,       "GRT_EQL"},
-                                                   {EQL,           "EQL"},
-                                                   {NOT_EQL,       "NOT_EQL"},
-                                                   {LEFT_BRA,      "LEFT_BRA"},
-                                                   {RIGHT_BRA,     "RIGHT_BRA"},
-                                                   {LEFT_INDEX,    "LEFT_INDEX"},
-                                                   {RIGHT_INDEX,   "RIGHT_INDEX"},
-                                                   {LEFT_BOUNDER,  "LEFT_BOUNDER"},
-                                                   {RIGHT_BOUNDER, "RIGHT_BOUNDER"},
-                                                   {COMMA,         "COMMA"},
-                                                   {SEMI,          "SEMI"},
-                                                   {SIN_QUE,       "SIN_QUE"},
-                                                   {DOU_QUE,       "DOU_QUE"},
-                                                   {LINE_NOTE,     "LINE_NOTE"},
-                                                   {MUL_NOTE,      "MUL_NOTE"}
-    };
+
 public:
     /**
      * 构造token
@@ -120,6 +88,8 @@ public:
     int getColumn() const;
 
     const std::string &getErrorMessage() const;
+
+    static std::map<TokenTag, std::string> tokenTagMap;
 };
 
 
