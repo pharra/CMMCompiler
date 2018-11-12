@@ -36,9 +36,9 @@ Lexer::Lexer(std::string filePath) {
 
 /**
  * 获取下一个token
- * @return Token
+ * @return Token *
  */
-Token Lexer::getNext() {
+Token * Lexer::getNext() {
     StateType stateType = START;
     TokenTag tokenTag = UNDEFINED;
     int currentColumn = column;
@@ -278,7 +278,7 @@ Token Lexer::getNext() {
             tokenTag = ERROR;
         }
     }
-    return Token(tokenTag, value, currentLine, currentColumn, errorMessage);
+    return new Token(tokenTag, value, currentLine, currentColumn, errorMessage);
 
 }
 

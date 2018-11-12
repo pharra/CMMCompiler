@@ -31,7 +31,7 @@ private:
 public:
     explicit Lexer(std::string filePath);
 
-    Token getNext();
+    Token * getNext();
 
     ~Lexer();
 };
