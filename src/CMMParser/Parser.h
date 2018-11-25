@@ -6,11 +6,13 @@
 #define CMMCOMPILER_PARSER_H
 
 #include <string>
+#include <list>
+#include <stack>
+
 #include "CMMLexer/Lexer.h"
 #include "Structure/TreeNode.h"
 #include "Structure/Token.h"
 #include "ParserException.h"
-#include <list>
 
 class Parser {
 private:
@@ -18,6 +20,8 @@ private:
     Token *nextToken;
     Token *nextNextToken;
     std::list<ParserException *> errorLists;
+    std::list<Token *> ignoreTokens;
+    std::list<TreeNode *> unParsered;
 
     Token *popNextToken(Token::TokenTag type);
 
@@ -74,6 +78,10 @@ private:
     TreeNode *parseReturn(int level);
 
     TreeNode *parseCharacter(Token::TokenTag type, int level);
+
+    TreeNode *stepUntilTokenSEMI(int level);
+
+    TreeNode *stepUntilToken(Token::TokenTag types[], int size, int level);
 
 
 public:
