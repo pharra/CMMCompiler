@@ -97,7 +97,7 @@ Token *Lexer::getNext() {
             if (tokenTag == Token::UNDEFINED) {
                 tokenTag = Token::END;
             } else {
-                reader->setBack();
+                // reader->setBack();
             }
             continue;
         }

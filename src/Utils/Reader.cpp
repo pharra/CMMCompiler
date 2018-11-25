@@ -25,7 +25,7 @@ Reader::Reader(std::string path) {
  * @return char
  */
 char Reader::getNextChar() {
-    if (cur > fileContent.size()) {
+    if (cur >= fileContent.size()) {
         return END_CHAR;
     }
     return fileContent[cur++];
