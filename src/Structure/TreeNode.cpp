@@ -5,85 +5,119 @@
 #include "Structure/TreeNode.h"
 #include "TreeNode.h"
 
+std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
+        {NUL,          "NUL"},
+        {IF_STMT,      "IF_STMT"},
+        {WHILE_STMT,   "WHILE_STMT"},
+        {FOR_STMT,     "FOR_STMT"},
+        {READ_STMT,    "READ_STMT"},
+        {WRITE_STMT,   "WRITE_STMT"},
+        {DECLARE_STMT, "DECLARE_STMT"},
+        {ASSIGN_STMT,  "ASSIGN_STMT"},
+        {BLOCK_STMT,   "BLOCK_STMT"},
+        {RETURN_STMT,  "RETURN_STMT"},
+        {EXP,          "EXP"},
+        {VAR,          "VAR"},
+        {FUNDECLARE,   "FUNDECLARE"},
+        {FUNCALL,      "FUNCALL"},
+        {OP,           "OP"},
+        {FACTOR,       "FACTOR"},
+        {LITERAL,      "LITERAL"},
+        {ERRORSTEP,    "ERRORSTEP"}
+};
 
-TreeNode *TreeNode::getLeft() const {
-    return left;
+TreeNode::TreeNode(TreeNodeType type, Token *t) {
+    token = t;
+    treeNodeType = type;
+    next = nullptr;
+    child = std::vector<TreeNode *>();
 }
 
-void TreeNode::setLeft(TreeNode *left) {
-    TreeNode::left = left;
+TreeNode::~TreeNode() {
+    delete token;
+    token = nullptr;
+
+    for (auto i:child) {
+        delete i;
+        i = nullptr;
+    }
+    child.clear();
+
+    delete next;
+    next = nullptr;
+
 }
 
-TreeNode *TreeNode::getMiddle() const {
-    return middle;
+Token::TokenTag TreeNode::getDataType() const {
+    if (token != nullptr) {
+        return token->getTag();
+    } else return Token::UNDEFINED;
 }
 
-void TreeNode::setMiddle(TreeNode *middle) {
-    TreeNode::middle = middle;
+std::string TreeNode::getValue() const {
+    if (token != nullptr) {
+        return token->getValue();
+    } else return nullptr;
 }
 
-TreeNode *TreeNode::getRight() const {
-    return right;
+int TreeNode::getLine() const {
+    if (token != nullptr) {
+        return token->getLine();
+    } else return -1;
 }
 
-void TreeNode::setRight(TreeNode *right) {
-    TreeNode::right = right;
-}
 
 TreeNode *TreeNode::getNext() const {
     return next;
 }
 
 void TreeNode::setNext(TreeNode *next) {
+    delete TreeNode::next;
     TreeNode::next = next;
 }
 
-TreeNode::TreeNode(Token *t, TreeNodeType type) {
-    token = t;
-    treeNodeType = type;
-    left = nullptr;
-    middle = nullptr;
-    right = nullptr;
-    next = nullptr;
-}
-
-TreeNode::~TreeNode() {
-    if (token != nullptr) {
-        delete token;
-        token = nullptr;
+void TreeNode::toString() {
+    for (int i = 0; i < level; i++) {
+        std::cout << "  ";
     }
-    if (left != nullptr) {
-        delete left;
-        left = nullptr;
+    std::cout << ">";
+    if (treeNodeType != NUL) {
+        std::cout << treeNodeTypeName();
     }
-    if (middle != nullptr) {
-        delete middle;
-        middle = nullptr;
+    if (token) {
+        std::cout << "('" << token->getValue() << "')" << std::endl;
+    } else {
+        std::cout << std::endl;
     }
-    if (right != nullptr) {
-        delete right;
-        right = nullptr;
+    for (auto &i : child) {
+        i->toString();
+    }
+    for (auto &i : child) {
+        if (i->getNext() != nullptr) {
+            i->getNext()->toString();
+        }
     }
     if (next != nullptr) {
-        delete next;
-        next = nullptr;
+        next->toString();
     }
 }
 
-TokenTag TreeNode::getDataType() const {
-    if(token != nullptr){
-        return token->getTag();
-    } else return UNDEFINED;
+std::string TreeNode::treeNodeTypeName() const {
+    return treeNodeTypeMap.find(treeNodeType)->second;
 }
 
-std::string TreeNode::getValue() const {
-    if(token != nullptr){
-        return token->getValue();
-    } else return nullptr;
+std::vector<TreeNode *> TreeNode::getChild() const {
+    return child;
 }
 
-int TreeNode::getLine() const {
-    if(token != nullptr){
-        return token->getLine();
-    } else return -1;
+int TreeNode::getLevel() const {
+    return level;
+}
+
+void TreeNode::setLevel(int level) {
+    TreeNode::level = level;
+}
+
+void TreeNode::push_back(TreeNode *node) {
+    child.push_back(node);
 }
