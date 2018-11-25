@@ -59,7 +59,7 @@ public:
      * @param c token所在列
      * @param error 错误信息
      */
-    Token(TokenTag t, std::string v, int l, int c, std::string error, bool isErr);
+    Token(TokenTag t, std::string v, int l, int c, std::string error, bool isErr = false);
 
     TokenTag getTag() const;
 
