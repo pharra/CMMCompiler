@@ -501,8 +501,8 @@ TreeNode *Parser::stepUntilTokenSEMI(int level) {
         if (tmp == nullptr) {
             break;
         }
-        TreeNode * t = new TreeNode(TreeNode::NUL, tmp);
-        t->setLevel(level+ 1);
+        auto *t = new TreeNode(TreeNode::NUL, tmp);
+        t->setLevel(level + 1);
         root->push_back(t);
     }
     root->push_back(new TreeNode(TreeNode::NUL, popNextToken(Token::SEMI)));
@@ -527,8 +527,8 @@ TreeNode *Parser::stepUntilToken(Token::TokenTag *types, int size, int level) {
         if (tmp == nullptr) {
             break;
         }
-        TreeNode * t = new TreeNode(TreeNode::NUL, tmp);
-        t->setLevel(level+ 1);
+        auto *t = new TreeNode(TreeNode::NUL, tmp);
+        t->setLevel(level + 1);
         root->push_back(t);
     }
     return root;
