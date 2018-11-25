@@ -10,18 +10,18 @@
 #include "Lexer.h"
 
 
-std::map<std::string, TokenTag> Lexer::keywordMap = {{"if",     IF},
-                                              {"else",   ELSE},
-                                              {"while",  WHILE},
-                                              {"for",    FOR},
-                                              {"read",   READ},
-                                              {"write",  WRITE},
-                                              {"int",    INT},
-                                              {"real",   REAL},
-                                              {"break",  BREAK},
-                                              {"switch", SWITCH},
-                                              {"case",   CASE},
-                                              {"return", RETURN}};
+std::map<std::string, Token::TokenTag> Lexer::keywordMap = {{"if",     Token::IF},
+                                                            {"else",   Token::ELSE},
+                                                            {"while",  Token::WHILE},
+                                                            {"for",    Token::FOR},
+                                                            {"read",   Token::READ},
+                                                            {"write",  Token::WRITE},
+                                                            {"int",    Token::INT},
+                                                            {"real",   Token::REAL},
+                                                            {"break",  Token::BREAK},
+                                                            {"switch", Token::SWITCH},
+                                                            {"case",   Token::CASE},
+                                                            {"return", Token::RETURN}};
 typedef enum {
     START,
     IGNORE,
@@ -48,6 +48,7 @@ Token *Lexer::getNext() {
     int currentLine = line;
     std::string value = std::string();
     std::string errorMessage = std::string();
+    bool isError = false;
 
     // 获取下一个token
     while (stateType != DONE) {
@@ -71,7 +72,7 @@ Token *Lexer::getNext() {
         if (stateType == IGNORE && tokenTag == Token::MUL_NOTE) {
             if (currentChar == END_CHAR) {
                 errorMessage = "Unterminated /* comment";
-                tokenTag = Token::ERROR;
+                isError = true;
                 stateType = DONE;
             }
             if (currentChar != '*') {
@@ -270,7 +271,7 @@ Token *Lexer::getNext() {
 
         if (!regex->isIdentifier(value)) {
             errorMessage = "ILLEGAL_IDENTIFIER";
-            tokenTag = Token::ERROR;
+            isError = true;
         }
     }
 
@@ -278,10 +279,10 @@ Token *Lexer::getNext() {
     if (tokenTag == Token::NUM) {
         if (!regex->isNum(value)) {
             errorMessage = "ILLEGAL_NUMBER";
-            tokenTag = Token::ERROR;
+            isError = true;
         }
     }
-    return new Token(tokenTag, value, currentLine, currentColumn, errorMessage);
+    return new Token(tokenTag, value, currentLine, currentColumn, errorMessage, isError);
 
 }
 
