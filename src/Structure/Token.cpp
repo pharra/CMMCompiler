@@ -4,9 +4,8 @@
 
 #include "Token.h"
 
-std::map<TokenTag, std::string> Token::tokenTagMap = {
+std::map<Token::TokenTag, std::string> Token::tokenTagMap = {
         {UNDEFINED,     "UNDEFINED"},
-        {ERROR,         "ERROR"},
         {END,           "END"},
         {IDENTIFIER,    "IDENTIFIER"},
         {NUM,           "NUM"},
@@ -49,15 +48,16 @@ std::map<TokenTag, std::string> Token::tokenTagMap = {
         {MUL_NOTE,      "MUL_NOTE"}
 };
 
-Token::Token(TokenTag t, std::string v, int l, int c, std::string error) {
+Token::Token(TokenTag t, std::string v, int l, int c, std::string error, bool isErr) {
     tag = t;
     value = std::move(v);
     line = l;
     column = c;
     errorMessage = std::move(error);
+    isError = isErr;
 }
 
-TokenTag Token::getTag() const {
+Token::TokenTag Token::getTag() const {
     return tag;
 }
 
@@ -79,5 +79,9 @@ std::string Token::getTagName() const {
 
 const std::string &Token::getErrorMessage() const {
     return errorMessage;
+}
+
+bool Token::isIsError() const {
+    return isError;
 }
 

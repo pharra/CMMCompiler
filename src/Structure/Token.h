@@ -9,12 +9,13 @@
 #include <map>
 
 
-
 class Token {
 public:
     enum TokenTag {
-        UNDEFINED,
-        ERROR, END,
+        // undefined
+                UNDEFINED,
+        // file end
+                END,
         // identifier
                 IDENTIFIER,
         // number
@@ -58,7 +59,7 @@ public:
      * @param c token所在列
      * @param error 错误信息
      */
-    Token(TokenTag t, std::string v, int l, int c, std::string error);
+    Token(TokenTag t, std::string v, int l, int c, std::string error, bool isErr);
 
     TokenTag getTag() const;
 
@@ -73,6 +74,8 @@ public:
     const std::string &getErrorMessage() const;
 
     static std::map<TokenTag, std::string> tokenTagMap;
+
+    bool isIsError() const;
 
 private:
     /* token类型 */
@@ -89,6 +92,9 @@ private:
 
     /* token错误信息*/
     std::string errorMessage;
+
+    bool isError;
+
 };
 
 
