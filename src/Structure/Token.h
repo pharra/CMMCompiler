@@ -8,65 +8,48 @@
 #include <string>
 #include <map>
 
-enum TokenTag {
-    UNDEFINED,
-    ERROR, END,
-    // identifier
-            IDENTIFIER,
-    // number
-            NUM,
-    // keyword
-            KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, BREAK, SWITCH, CASE, RETURN,
-    // operator
-    // +
-            PLUS,
-    // -
-            MINUS,
-    // *
-            MUL,
-    // /
-            DIV,
-    // %
-            MOD,
-    // = < <= > >= == <>
-            ASSIGN, LES, LES_EQL, GRT, GRT_EQL, EQL, NOT_EQL,
-    // separator
-    // ( )
-            LEFT_BRA, RIGHT_BRA,
-    // [ ]
-            LEFT_INDEX, RIGHT_INDEX,
-    // { }
-            LEFT_BOUNDER, RIGHT_BOUNDER,
-    // . , ; ' "
-            POINTER, COMMA, SEMI, SIN_QUE, DOU_QUE,
-    // annotation
-    // //
-            LINE_NOTE,
-    // /* */
-            MUL_NOTE
-};
 
 
 class Token {
-private:
-
-    /* token类型 */
-    TokenTag tag;
-
-    /* token内容 */
-    std::string value;
-
-    /* token所在行 */
-    int line;
-
-    /* token所在列 */
-    int column;
-
-    /* token错误信息*/
-    std::string errorMessage;
-
-
 public:
+    enum TokenTag {
+        UNDEFINED,
+        ERROR, END,
+        // identifier
+                IDENTIFIER,
+        // number
+                NUM,
+        // keyword
+                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, BREAK, SWITCH, CASE, RETURN,
+        // operator
+        // +
+                PLUS,
+        // -
+                MINUS,
+        // *
+                MUL,
+        // /
+                DIV,
+        // %
+                MOD,
+        // = < <= > >= == <>
+                ASSIGN, LES, LES_EQL, GRT, GRT_EQL, EQL, NOT_EQL,
+        // separator
+        // ( )
+                LEFT_BRA, RIGHT_BRA,
+        // [ ]
+                LEFT_INDEX, RIGHT_INDEX,
+        // { }
+                LEFT_BOUNDER, RIGHT_BOUNDER,
+        // . , ; ' "
+                POINTER, COMMA, SEMI, SIN_QUE, DOU_QUE,
+        // annotation
+        // //
+                LINE_NOTE,
+        // /* */
+                MUL_NOTE
+    };
+
     /**
      * 构造token
      * @param t token类型
@@ -90,6 +73,22 @@ public:
     const std::string &getErrorMessage() const;
 
     static std::map<TokenTag, std::string> tokenTagMap;
+
+private:
+    /* token类型 */
+    TokenTag tag;
+
+    /* token内容 */
+    std::string value;
+
+    /* token所在行 */
+    int line;
+
+    /* token所在列 */
+    int column;
+
+    /* token错误信息*/
+    std::string errorMessage;
 };
 
 

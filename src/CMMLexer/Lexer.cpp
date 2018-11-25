@@ -43,7 +43,7 @@ Lexer::Lexer(std::string filePath) {
  */
 Token *Lexer::getNext() {
     StateType stateType = START;
-    TokenTag tokenTag = UNDEFINED;
+    Token::TokenTag tokenTag = Token::UNDEFINED;
     int currentColumn = column;
     int currentLine = line;
     std::string value = std::string();
@@ -58,7 +58,7 @@ Token *Lexer::getNext() {
 
 
         // 忽略行注释
-        if (stateType == IGNORE && tokenTag == LINE_NOTE) {
+        if (stateType == IGNORE && tokenTag == Token::LINE_NOTE) {
             if (currentChar == '\n') {
                 line += 1;
                 column = 1;
@@ -68,10 +68,10 @@ Token *Lexer::getNext() {
         }
 
         // 忽略段注释
-        if (stateType == IGNORE && tokenTag == MUL_NOTE) {
+        if (stateType == IGNORE && tokenTag == Token::MUL_NOTE) {
             if (currentChar == END_CHAR) {
-                errorMessage = "EXPECTED RIGHT_MUL_NOTE(*/) ";
-                tokenTag = ERROR;
+                errorMessage = "Unterminated /* comment";
+                tokenTag = Token::ERROR;
                 stateType = DONE;
             }
             if (currentChar != '*') {
@@ -93,8 +93,8 @@ Token *Lexer::getNext() {
         // 如果到了文件末
         if (currentChar == END_CHAR) {
             stateType = DONE;
-            if (tokenTag == UNDEFINED) {
-                tokenTag = END;
+            if (tokenTag == Token::UNDEFINED) {
+                tokenTag = Token::END;
             } else {
                 reader->setBack();
             }
@@ -103,7 +103,7 @@ Token *Lexer::getNext() {
 
         // 忽略空格和\t
         if (currentChar == ' ' || currentChar == '\t') {
-            if (tokenTag != UNDEFINED) {
+            if (tokenTag != Token::UNDEFINED) {
                 stateType = DONE;
             } else {
                 currentColumn += 1;
@@ -115,7 +115,7 @@ Token *Lexer::getNext() {
         if (currentChar == '\n') {
             line += 1;
             column = 1;
-            if (tokenTag != UNDEFINED) {
+            if (tokenTag != Token::UNDEFINED) {
                 stateType = DONE;
             } else {
                 currentLine = line;
@@ -125,108 +125,108 @@ Token *Lexer::getNext() {
         }
 
         // 处理token第一个字符
-        if (tokenTag == UNDEFINED) {
+        if (tokenTag == Token::UNDEFINED) {
             if (currentChar == '[') {
-                tokenTag = LEFT_INDEX;
+                tokenTag = Token::LEFT_INDEX;
             }
             if (currentChar == ']') {
-                tokenTag = RIGHT_INDEX;
+                tokenTag = Token::RIGHT_INDEX;
             }
             if (currentChar == '{') {
-                tokenTag = LEFT_BOUNDER;
+                tokenTag = Token::LEFT_BOUNDER;
             }
             if (currentChar == '}') {
-                tokenTag = RIGHT_BOUNDER;
+                tokenTag = Token::RIGHT_BOUNDER;
             }
             if (currentChar == '(') {
-                tokenTag = LEFT_BRA;
+                tokenTag = Token::LEFT_BRA;
             }
             if (currentChar == ')') {
-                tokenTag = RIGHT_BRA;
+                tokenTag = Token::RIGHT_BRA;
             }
             if (currentChar == ',') {
-                tokenTag = COMMA;
+                tokenTag = Token::COMMA;
             }
             if (currentChar == ';') {
-                tokenTag = SEMI;
+                tokenTag = Token::SEMI;
             }
             if (currentChar == '+') {
-                tokenTag = PLUS;
+                tokenTag = Token::PLUS;
             }
             if (currentChar == '-') {
-                tokenTag = MINUS;
+                tokenTag = Token::MINUS;
             }
             if (currentChar == '*') {
-                tokenTag = MUL;
+                tokenTag = Token::MUL;
             }
             if (currentChar == '/') {
-                tokenTag = DIV;
+                tokenTag = Token::DIV;
             }
             if (currentChar == '%') {
-                tokenTag = MOD;
+                tokenTag = Token::MOD;
             }
             if (currentChar == '=') {
-                tokenTag = ASSIGN;
+                tokenTag = Token::ASSIGN;
             }
             if (currentChar == '<') {
-                tokenTag = LES;
+                tokenTag = Token::LES;
             }
             if (currentChar == '>') {
-                tokenTag = GRT;
+                tokenTag = Token::GRT;
             }
             if (currentChar == '\'') {
-                tokenTag = SIN_QUE;
+                tokenTag = Token::SIN_QUE;
             }
             if (currentChar == '\"') {
-                tokenTag = DOU_QUE;
+                tokenTag = Token::DOU_QUE;
             }
-            if ((currentChar <= '9' && currentChar >= '0') || currentChar == '.') {
-                tokenTag = NUM;
+            if (isdigit(currentChar) || currentChar == '.') {
+                tokenTag = Token::NUM;
             }
-            if ((currentChar <= 'z' && currentChar >= 'a') || (currentChar <= 'Z' && currentChar >= 'A')) {
-                tokenTag = IDENTIFIER;
+            if (isalpha(currentChar)) {
+                tokenTag = Token::IDENTIFIER;
             }
             value.append(1, currentChar);
         }
             // 处理双字符运算符
-        else if (tokenTag == ASSIGN) {
+        else if (tokenTag == Token::ASSIGN) {
             if (currentChar == '=') {
-                tokenTag = EQL;
+                tokenTag = Token::EQL;
                 stateType = DONE;
                 value.append(1, currentChar);
             } else {
                 stateType = DONE;
                 reader->setBack();
             }
-        } else if (tokenTag == LES) {
+        } else if (tokenTag == Token::LES) {
             if (currentChar == '=') {
-                tokenTag = LES_EQL;
+                tokenTag = Token::LES_EQL;
                 stateType = DONE;
                 value.append(1, currentChar);
             } else if (currentChar == '>') {
-                tokenTag = NOT_EQL;
+                tokenTag = Token::NOT_EQL;
                 stateType = DONE;
                 value.append(1, currentChar);
             } else {
                 stateType = DONE;
                 reader->setBack();
             }
-        } else if (tokenTag == GRT) {
+        } else if (tokenTag == Token::GRT) {
             if (currentChar == '=') {
-                tokenTag = GRT_EQL;
+                tokenTag = Token::GRT_EQL;
                 stateType = DONE;
                 value.append(1, currentChar);
             } else {
                 stateType = DONE;
                 reader->setBack();
             }
-        } else if (tokenTag == DIV) {
+        } else if (tokenTag == Token::DIV) {
             if (currentChar == '/') {
-                tokenTag = LINE_NOTE;
+                tokenTag = Token::LINE_NOTE;
                 stateType = IGNORE;
                 value.append(1, currentChar);
             } else if (currentChar == '*') {
-                tokenTag = MUL_NOTE;
+                tokenTag = Token::MUL_NOTE;
                 stateType = IGNORE;
                 value.append(1, currentChar);
             } else {
@@ -235,7 +235,7 @@ Token *Lexer::getNext() {
             }
         }
             // 处理数字
-        else if (tokenTag == NUM) {
+        else if (tokenTag == Token::NUM) {
             if (specialChar.find(currentChar) != -1) {
                 stateType = DONE;
                 reader->setBack();
@@ -245,7 +245,7 @@ Token *Lexer::getNext() {
             }
         }
             // 处理标识符
-        else if (tokenTag == IDENTIFIER) {
+        else if (tokenTag == Token::IDENTIFIER) {
             if (specialChar.find(currentChar) != -1) {
                 stateType = DONE;
                 reader->setBack();
@@ -263,22 +263,22 @@ Token *Lexer::getNext() {
 
 
     // 判断标识符是否是关键字，是否是正确的标识符格式
-    if (tokenTag == IDENTIFIER) {
+    if (tokenTag == Token::IDENTIFIER) {
         if (keywordMap.find(value) != keywordMap.end()) {
             tokenTag = keywordMap.find(value)->second;
         }
 
         if (!regex->isIdentifier(value)) {
             errorMessage = "ILLEGAL_IDENTIFIER";
-            tokenTag = ERROR;
+            tokenTag = Token::ERROR;
         }
     }
 
     // 判断是否是正确的数字格式
-    if (tokenTag == NUM) {
+    if (tokenTag == Token::NUM) {
         if (!regex->isNum(value)) {
             errorMessage = "ILLEGAL_NUMBER";
-            tokenTag = ERROR;
+            tokenTag = Token::ERROR;
         }
     }
     return new Token(tokenTag, value, currentLine, currentColumn, errorMessage);

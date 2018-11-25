@@ -33,7 +33,7 @@ public:
     ~Lexer();
 
     // 识别关键字
-    static std::map<std::string, TokenTag> keywordMap;
+    static std::map<std::string, Token::TokenTag> keywordMap;
 };
 
 
