@@ -9,7 +9,7 @@
 #include <list>
 #include <stack>
 
-#include "CMMLexer/Lexer.h"
+#include "Lexer/Lexer.h"
 #include "Structure/TreeNode.h"
 #include "Structure/Token.h"
 #include "ParserException.h"

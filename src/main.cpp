@@ -1,7 +1,7 @@
 #include <iostream>
-#include "CMMLexer/Lexer.h"
+#include "Lexer/Lexer.h"
 #include "Structure/Token.h"
-#include "CMMParser/Parser.h"
+#include "Parser/Parser.h"
 #include "Structure/TreeNode.h"
 #include <sstream>
 
