@@ -1,0 +1,3 @@
+C:\Users\chasi\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.5107.21\bin\cmake\win\bin\cmake.exe -E remove -f CMakeFiles\CMMCompiler.dir/objects.a
+C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\ar.exe cr CMakeFiles\CMMCompiler.dir/objects.a @CMakeFiles\CMMCompiler.dir\objects1.rsp
+C:\PROGRA~1\MINGW-~1\X86_64~1.0-P\mingw64\bin\G__~1.EXE -static -O3 -DNDEBUG   -Wl,--whole-archive CMakeFiles\CMMCompiler.dir/objects.a -Wl,--no-whole-archive  -o CMMCompiler.exe -Wl,--out-implib,libCMMCompiler.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\CMMCompiler.dir\linklibs.rsp

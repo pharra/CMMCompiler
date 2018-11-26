@@ -111,8 +111,9 @@ Token *Parser::popNextToken(Token::TokenTag type) {
         exception = new ParserException("expected:" + Token::tokenTagMap.find(type)->second, nextToken->getLine(),
                                         ParserException::NO_EXPECTED_TOKEN);
         errorLists.push_back(exception);
-        tmp = new Token(type, nextToken->getValue(), nextToken->getLine(), nextToken->getColumn(),
-                        nextToken->getErrorMessage());
+        tmp = new Token(type, "ERROR", nextToken->getLine(), nextToken->getColumn(),
+                        "expected:" + Token::tokenTagMap.find(type)->second,
+                        true);
         return tmp;
     }
 }
@@ -142,8 +143,9 @@ Token *Parser::popNextToken(Token::TokenTag *types, int size) {
     exception = new ParserException("need expected tokens", nextToken->getLine(),
                                     ParserException::NO_EXPECTED_TOKEN);
     errorLists.push_back(exception);
-    tmp = new Token(types[0], nextToken->getValue(), nextToken->getLine(), nextToken->getColumn(),
-                    nextToken->getErrorMessage());
+    tmp = new Token(types[0], "ERROR", nextToken->getLine(), nextToken->getColumn(),
+                    "need expected tokens",
+                    true);
     return tmp;
 }
 

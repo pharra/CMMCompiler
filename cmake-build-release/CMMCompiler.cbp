@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CMMCompiler"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CMMCompiler">
+				<Option output="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/CMMCompiler.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/chasi/Desktop/CMMCompiler/src"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 CMMCompiler"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CMMCompiler/fast">
+				<Option output="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/CMMCompiler.exe" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="C:/Users/chasi/Desktop/CMMCompiler/src"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/x86_64-w64-mingw32"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include/c++/backward"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/include-fixed"/>
+					<Add directory="C:/Program Files/mingw-w64/x86_64-8.1.0-posix-seh-rt_v6-rev0/mingw64/bin/../lib/gcc/x86_64-w64-mingw32/8.1.0/../../../../x86_64-w64-mingw32/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 CMMCompiler/fast"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="C:/PROGRA~1/MINGW-~1/X86_64~1.0-P/mingw64/bin/mingw32-make.exe -f &quot;C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Lexer/Lexer.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Lexer/Lexer.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Lexer/Regex.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Lexer/Regex.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Parser/Parser.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Parser/Parser.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Parser/ParserException.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Parser/ParserException.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Structure/Token.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Structure/Token.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Structure/TreeNode.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Structure/TreeNode.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Utils/DFA.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Utils/DFA.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Utils/Reader.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/Utils/Reader.h">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/src/main.cpp">
+			<Option target="CMMCompiler"/>
+		</Unit>
+		<Unit filename="C:/Users/chasi/Desktop/CMMCompiler/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

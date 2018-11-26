@@ -1,19 +1,19 @@
 #include <iostream>
-
 #include "CMMLexer/Lexer.h"
 #include "Structure/Token.h"
+#include "CMMParser/Parser.h"
+#include "Structure/TreeNode.h"
+#include <sstream>
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
         std::cout << "need two params" << std::endl;
         return 1;
     }
-    Lexer lexer = Lexer(argv[1]);
-    Token *token = lexer.getNext();
-    while (token->getTag() != END) {
-        std::cout << "<Line:" << token->getLine() << ", Column:" << token->getColumn() << ", " <<token->getTagName() << ", " <<token->getValue() << " " << token->getErrorMessage() << ">\n";
-        delete token;
-        token = lexer.getNext();
-    }
+    Parser parser = Parser(argv[1]);
+    TreeNode *root = parser.analyse();
+    if (root->getNext())
+        root->getNext()->toString();
+    delete root;
     return 0;
 }

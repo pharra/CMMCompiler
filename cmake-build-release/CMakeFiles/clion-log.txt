@@ -1,0 +1,4 @@
+C:\Users\chasi\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.5107.21\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Release -G "CodeBlocks - MinGW Makefiles" C:\Users\chasi\Desktop\CMMCompiler
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/chasi/Desktop/CMMCompiler/cmake-build-release
