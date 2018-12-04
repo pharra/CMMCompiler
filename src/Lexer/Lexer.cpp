@@ -177,9 +177,11 @@ Token *Lexer::getNext() {
             }
             if (currentChar == '\'') {
                 tokenTag = Token::SIN_QUE;
+                continue;
             }
             if (currentChar == '\"') {
                 tokenTag = Token::DOU_QUE;
+                continue;
             }
             if (isdigit(currentChar) || currentChar == '.') {
                 tokenTag = Token::NUM;
@@ -240,6 +242,24 @@ Token *Lexer::getNext() {
             if (specialChar.find(currentChar) != -1) {
                 stateType = DONE;
                 reader->setBack();
+            } else {
+                value.append(1, currentChar);
+                continue;
+            }
+        }
+            // 处理字符
+        else if (tokenTag == Token::DOU_QUE) {
+            if (currentChar == '\"') {
+                stateType = DONE;
+                tokenTag = Token::CHARS;
+            } else {
+                value.append(1, currentChar);
+                continue;
+            }
+        } else if (tokenTag == Token::SIN_QUE) {
+            if (currentChar == '\'') {
+                stateType = DONE;
+                tokenTag = Token::CHARS;
             } else {
                 value.append(1, currentChar);
                 continue;
