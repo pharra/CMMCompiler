@@ -24,13 +24,13 @@ std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
         {OP,           "OP"},
         {FACTOR,       "FACTOR"},
         {LITERAL,      "LITERAL"},
-        {ERRORSTEP,    "ERRORSTEP"}
+        {ERRORSTEP,    "ERRORSTEP"},
+        {PARAMS_STMT,  "PARAMS_STMT"},
 };
 
 TreeNode::TreeNode(TreeNodeType type, Token *t) {
     token = t;
     treeNodeType = type;
-    next = nullptr;
     child = std::vector<TreeNode *>();
 }
 
@@ -43,9 +43,6 @@ TreeNode::~TreeNode() {
         i = nullptr;
     }
     child.clear();
-
-    delete next;
-    next = nullptr;
 
 }
 
@@ -67,16 +64,6 @@ int TreeNode::getLine() const {
     } else return -1;
 }
 
-
-TreeNode *TreeNode::getNext() const {
-    return next;
-}
-
-void TreeNode::setNext(TreeNode *next) {
-    delete TreeNode::next;
-    TreeNode::next = next;
-}
-
 void TreeNode::toString() {
     for (int i = 0; i < level; i++) {
         std::cout << "  ";
@@ -92,14 +79,6 @@ void TreeNode::toString() {
     }
     for (auto &i : child) {
         i->toString();
-    }
-    for (auto &i : child) {
-        if (i->getNext() != nullptr) {
-            i->getNext()->toString();
-        }
-    }
-    if (next != nullptr) {
-        next->toString();
     }
 }
 

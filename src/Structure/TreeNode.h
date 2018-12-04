@@ -31,6 +31,7 @@ public:
         FACTOR,         // 因子
         LITERAL,        // 字面值
         ERRORSTEP,      // 跳过错误
+        PARAMS_STMT,    // 参数声明，传入
     };
 
     static std::map<TreeNodeType, std::string> treeNodeTypeMap;
@@ -47,9 +48,6 @@ public:
 
     int getLine() const;
 
-    TreeNode *getNext() const;
-
-    void setNext(TreeNode *next);
 
     void toString();
 
@@ -69,7 +67,6 @@ private:
     TreeNodeType treeNodeType;
     Token *token;
     std::vector<TreeNode *> child;
-    TreeNode *next;
     int level = 0;
 
 };

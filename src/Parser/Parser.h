@@ -8,6 +8,7 @@
 #include <string>
 #include <list>
 #include <stack>
+#include <vector>
 
 #include "Lexer/Lexer.h"
 #include "Structure/TreeNode.h"
@@ -22,6 +23,7 @@ private:
     std::list<ParserException *> errorLists;
     std::list<Token *> ignoreTokens;
     std::list<TreeNode *> unParsered;
+    std::vector<TreeNode *> treeNodeVec;
 
     Token *popNextToken(Token::TokenTag type);
 
@@ -87,7 +89,9 @@ private:
 public:
     explicit Parser(std::string path);
 
-    TreeNode *analyse();
+    std::vector<TreeNode *> analyse();
+
+    std::vector<TreeNode *> clearCharaterNode(std::vector<TreeNode *> & nodeVec);
 
     ~Parser();
 };

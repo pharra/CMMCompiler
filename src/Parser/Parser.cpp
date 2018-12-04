@@ -8,9 +8,9 @@ Parser::Parser(std::string path) {
     lexer = new Lexer(std::move(path));
     nextToken = nullptr;
     nextNextToken = nullptr;
-    errorLists = std::list<ParserException *>();
-    ignoreTokens = std::list<Token *>();
-    unParsered = std::list<TreeNode *>();
+//    errorLists = std::list<ParserException *>();
+//    ignoreTokens = std::list<Token *>();
+//    unParsered = std::list<TreeNode *>();
 }
 
 Parser::~Parser() {
@@ -36,15 +36,12 @@ Parser::~Parser() {
     unParsered.clear();
 }
 
-TreeNode *Parser::analyse() {
-    auto *root = new TreeNode(TreeNode::NUL);
-    TreeNode *head = root;
+std::vector<TreeNode *> Parser::analyse() {
     getNextToken();
     try {
         while (getNextTokenType() != Token::END) {
             TreeNode *node = parseStmt(0);
-            root->setNext(node);
-            root = node;
+            treeNodeVec.push_back(node);
         }
     } catch (ParserException &pe) {
         std::cout << pe.message() << '\n';
@@ -56,7 +53,7 @@ TreeNode *Parser::analyse() {
     for (auto i : unParsered) {
         i->toString();
     }
-    return head;
+    return treeNodeVec;
 }
 
 void Parser::getNextToken() {
@@ -150,7 +147,7 @@ Token *Parser::popNextToken(Token::TokenTag *types, int size) {
 }
 
 TreeNode *Parser::parseCharacter(Token::TokenTag type, int level) {
-    auto *node = new TreeNode(TreeNode::NUL, popNextToken(type));
+    auto *node = new TreeNode(TreeNode::CHARACTER, popNextToken(type));
     node->setLevel(level);
     return node;
 }
@@ -170,6 +167,7 @@ TreeNode *Parser::parseStmt(int level) {
             return parseWriteStmt(level);
         case Token::INT:
         case Token::REAL:
+        case Token::STRING:
             return parseDeclareStmt(level);
         case Token::LEFT_BOUNDER:
             return parseStmtBlock(level);
@@ -248,8 +246,8 @@ TreeNode *Parser::parseWriteStmt(int level) {
 }
 
 TreeNode *Parser::parseDeclareStmt(int level, bool isParseFun) {
-    Token::TokenTag type[] = {Token::INT, Token::REAL};
-    auto *node = new TreeNode(TreeNode::DECLARE_STMT, popNextToken(type, 2));
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::STRING};
+    auto *node = new TreeNode(TreeNode::DECLARE_STMT, popNextToken(type, 3));
     node->setLevel(level);
     if (getNextNextTokenType() == Token::LEFT_BRA)    //函数声明
     {
@@ -373,6 +371,7 @@ TreeNode *Parser::parseFactor(int level) {
     auto *node = new TreeNode(TreeNode::FACTOR);
     node->setLevel(level);
     switch (getNextTokenType()) {
+        case Token::CHARS:
         case Token::NUM:
             node->push_back(parseLiteral(level + 1));
             break;
@@ -400,7 +399,7 @@ TreeNode *Parser::parseFactor(int level) {
 }
 
 TreeNode *Parser::parseLiteral(int level) {
-    auto *node = new TreeNode(TreeNode::LITERAL, popNextToken(Token::NUM));
+    auto *node = new TreeNode(TreeNode::LITERAL, popNextToken(getNextTokenType()));
     node->setLevel(level);
     return node;
 }
@@ -441,24 +440,23 @@ TreeNode *Parser::parseFunctionDeclare(int level) {
     auto *node = new TreeNode(TreeNode::FUNDECLARE, popNextToken(Token::IDENTIFIER));
     node->setLevel(level);
     node->push_back(parseCharacter(Token::LEFT_BRA, level + 1));
-    Token::TokenTag types[2] = {Token::INT, Token::REAL};
-    TreeNode *header, *temp;
-    if (checkNextTokenType(types, 2)) {
-        header = parseDeclareStmt(level + 1, true);
-        node->push_back(header);
+    Token::TokenTag types[3] = {Token::INT, Token::REAL, Token::CHARS};
+    auto *params = new TreeNode(TreeNode::PARAMS_STMT);
+    params->setLevel(level + 1);
+    if (checkNextTokenType(types, 3)) {
+        params->push_back(parseDeclareStmt(level + 2, true));
         while (getNextTokenType() != Token::RIGHT_BRA) {
-            node->push_back(parseCharacter(Token::COMMA, level + 1));
-            if (!checkNextTokenType(types, 2)) {
+            params->push_back(parseCharacter(Token::COMMA, level + 2));
+            if (!checkNextTokenType(types, 3)) {
                 errorLists.push_back(new ParserException("Invalid declare function params stmt", nextToken->getLine(),
                                                          ParserException::NO_EXPECTED_TOKEN));
                 Token::TokenTag forStep[] = {Token::COMMA, Token::RIGHT_BRA};
                 unParsered.push_back(stepUntilToken(forStep, 2, level));
             }
-            temp = parseDeclareStmt(level + 1, true);
-            header->setNext(temp);
-            header = temp;
+            params->push_back(parseDeclareStmt(level + 2, true));
         }
     }
+    node->push_back(params);
     node->push_back(parseCharacter(Token::RIGHT_BRA, level + 1));
     return node;
 }
@@ -468,17 +466,16 @@ TreeNode *Parser::parseFunctionCall(int level, bool isStmt) {
     auto *node = new TreeNode(TreeNode::FUNCALL, popNextToken(Token::IDENTIFIER));
     node->setLevel(level);
     node->push_back(parseCharacter(Token::LEFT_BRA, level + 1));
-    TreeNode *header, *temp;
+    auto *params = new TreeNode(TreeNode::PARAMS_STMT);
+    params->setLevel(level + 1);
     if (getNextTokenType() != Token::RIGHT_BRA) {
-        header = parseExp(level + 1);
-        node->push_back(header);
+        params->push_back(parseExp(level + 2));
         while (getNextTokenType() != Token::RIGHT_BRA) {
-            node->push_back(parseCharacter(Token::COMMA, level + 1));
-            temp = parseExp(level + 1);
-            header->setNext(temp);
-            header = temp;
+            params->push_back(parseCharacter(Token::COMMA, level + 2));
+            params->push_back(parseExp(level + 2));
         }
     }
+    node->push_back(params);
     node->push_back(parseCharacter(Token::RIGHT_BRA, level + 1));
     if (isStmt) {
         node->push_back(parseCharacter(Token::SEMI, level + 1));
@@ -534,6 +531,17 @@ TreeNode *Parser::stepUntilToken(Token::TokenTag *types, int size, int level) {
         root->push_back(t);
     }
     return root;
+}
+
+std::vector<TreeNode *> Parser::clearCharaterNode(std::vector<TreeNode *> &nodeVec) {
+    for (auto &i:nodeVec) {
+        for (auto &j : i->getChild()) {
+            if (i->getNext() != nullptr) {
+                i->getNext()->toString();
+            }
+        }
+    }
+    return nodeVec;
 }
 
 
