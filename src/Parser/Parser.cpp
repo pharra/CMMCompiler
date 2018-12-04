@@ -535,11 +535,7 @@ TreeNode *Parser::stepUntilToken(Token::TokenTag *types, int size, int level) {
 
 std::vector<TreeNode *> Parser::clearCharaterNode(std::vector<TreeNode *> &nodeVec) {
     for (auto &i:nodeVec) {
-        for (auto &j : i->getChild()) {
-            if (i->getNext() != nullptr) {
-                i->getNext()->toString();
-            }
-        }
+        i->removeCharacter();
     }
     return nodeVec;
 }

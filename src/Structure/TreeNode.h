@@ -48,6 +48,7 @@ public:
 
     int getLine() const;
 
+    void removeCharacter();
 
     void toString();
 

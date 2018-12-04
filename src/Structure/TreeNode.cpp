@@ -109,3 +109,12 @@ Token *TreeNode::getToken() const {
 TreeNode::TreeNodeType TreeNode::getTreeNodeType() const {
     return treeNodeType;
 }
+
+void TreeNode::removeCharacter() {
+    for (auto i = child.begin(); i != child.end(); ++i) {
+        (*i)->removeCharacter();
+        if ((*i)->getTreeNodeType() == CHARACTER) {
+            i = child.erase(i);
+        }
+    }
+}
