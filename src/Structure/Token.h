@@ -20,8 +20,10 @@ public:
                 IDENTIFIER,
         // number
                 NUM,
+        // string
+                CHARS,
         // keyword
-                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, BREAK, SWITCH, CASE, RETURN,
+                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, BREAK, SWITCH, CASE, RETURN, STRING,
         // operator
         // +
                 PLUS,
@@ -76,6 +78,8 @@ public:
     static std::map<TokenTag, std::string> tokenTagMap;
 
     bool isIsError() const;
+
+    Token *clone();
 
 private:
     /* token类型 */
