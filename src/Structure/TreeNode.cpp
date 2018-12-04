@@ -7,6 +7,7 @@
 
 std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
         {NUL,          "NUL"},
+        {CHARACTER,    "CHARACTER"},
         {IF_STMT,      "IF_STMT"},
         {WHILE_STMT,   "WHILE_STMT"},
         {FOR_STMT,     "FOR_STMT"},
@@ -120,4 +121,12 @@ void TreeNode::setLevel(int level) {
 
 void TreeNode::push_back(TreeNode *node) {
     child.push_back(node);
+}
+
+Token *TreeNode::getToken() const {
+    return token;
+}
+
+TreeNode::TreeNodeType TreeNode::getTreeNodeType() const {
+    return treeNodeType;
 }
