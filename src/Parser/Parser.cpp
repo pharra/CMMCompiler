@@ -292,7 +292,6 @@ TreeNode *Parser::parseAssignStmt(int level, bool isParseFor) {
 TreeNode *Parser::parseStmtBlock(int level) {
     auto *node = new TreeNode(TreeNode::BLOCK_STMT);
     node->setLevel(level);
-    TreeNode *header = node;
     TreeNode *temp;
     node->push_back(parseCharacter(Token::LEFT_BOUNDER, level + 1));
     while (getNextTokenType() != Token::RIGHT_BOUNDER) {
@@ -301,10 +300,9 @@ TreeNode *Parser::parseStmtBlock(int level) {
             break;
         }
         node->push_back(temp);
-        node = temp;
     }
     node->push_back(parseCharacter(Token::RIGHT_BOUNDER, level + 1));
-    return header;
+    return node;
 }
 
 
