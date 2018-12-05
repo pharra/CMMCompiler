@@ -194,10 +194,26 @@ TreeNode *Parser::parseIfStmt(int level) {
     node->push_back(parseCharacter(Token::LEFT_BRA, level + 1));
     node->push_back(parseExp(level + 1));
     node->push_back(parseCharacter(Token::RIGHT_BRA, level + 1));
-    node->push_back(parseStmt(level + 1));
+    TreeNode *tmp = parseStmt(level + 1);
+    if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
+        auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+        blockStmt->setLevel(tmp->getLevel());
+        blockStmt->push_back(tmp);
+        tmp->setLevel(tmp->getLevel() + 1);
+        tmp = blockStmt;
+    }
+    node->push_back(tmp);
     if (getNextTokenType() == Token::ELSE) {
         node->push_back(parseCharacter(Token::ELSE, level + 1));
-        node->push_back(parseStmt(level + 1));
+        TreeNode *tmp = parseStmt(level + 1);
+        if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
+            auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+            blockStmt->setLevel(tmp->getLevel());
+            blockStmt->push_back(tmp);
+            tmp->setLevel(tmp->getLevel() + 1);
+            tmp = blockStmt;
+        }
+        node->push_back(tmp);
     }
     return node;
 }
@@ -208,7 +224,15 @@ TreeNode *Parser::parseWhileStmt(int level) {
     node->push_back(parseCharacter(Token::LEFT_BRA, level + 1));
     node->push_back(parseExp(level + 1));
     node->push_back(parseCharacter(Token::RIGHT_BRA, level + 1));
-    node->push_back(parseStmt(level + 1));
+    TreeNode *tmp = parseStmt(level + 1);
+    if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
+        auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+        blockStmt->setLevel(tmp->getLevel());
+        blockStmt->push_back(tmp);
+        tmp->setLevel(tmp->getLevel() + 1);
+        tmp = blockStmt;
+    }
+    node->push_back(tmp);
     return node;
 }
 
@@ -221,7 +245,15 @@ TreeNode *Parser::parseForStmt(int level) {
     node->push_back(parseCharacter(Token::SEMI, level + 1));
     node->push_back(parseAssignStmt(level + 1, true));
     node->push_back(parseCharacter(Token::RIGHT_BRA, level + 1));
-    node->push_back(parseStmt(level + 1));
+    TreeNode *tmp = parseStmt(level + 1);
+    if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
+        auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+        blockStmt->setLevel(tmp->getLevel());
+        blockStmt->push_back(tmp);
+        tmp->setLevel(tmp->getLevel() + 1);
+        tmp = blockStmt;
+    }
+    node->push_back(tmp);
     return node;
 }
 
