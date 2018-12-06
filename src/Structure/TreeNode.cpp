@@ -90,14 +90,6 @@ std::vector<TreeNode *> TreeNode::getChild() const {
     return child;
 }
 
-int TreeNode::getLevel() const {
-    return level;
-}
-
-void TreeNode::setLevel(int level) {
-    TreeNode::level = level;
-}
-
 void TreeNode::push_back(TreeNode *node) {
     child.push_back(node);
 }
@@ -123,4 +115,15 @@ void TreeNode::removeCharacter() {
 
 void TreeNode::setToken(Token *t) {
     token = t;
+}
+
+void TreeNode::setChildLevels(int level) {
+    TreeNode::level = level;
+    for (auto &i:child) {
+        i->setChildLevels(level + 1);
+    }
+}
+
+int TreeNode::getLevel() const {
+    return level;
 }

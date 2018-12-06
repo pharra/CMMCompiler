@@ -37,53 +37,53 @@ private:
 
     Token::TokenTag getNextNextTokenType();
 
-    TreeNode *parseStmt(int level);
+    TreeNode *parseStmt();
 
-    TreeNode *parseIfStmt(int level);
+    TreeNode *parseIfStmt();
 
-    TreeNode *parseWhileStmt(int level);
+    TreeNode *parseWhileStmt();
 
-    TreeNode *parseForStmt(int level);
+    TreeNode *parseForStmt();
 
-    TreeNode *parseReadStmt(int level);
+    TreeNode *parseReadStmt();
 
-    TreeNode *parseWriteStmt(int level);
+    TreeNode *parseWriteStmt();
 
-    TreeNode *parseDeclareStmt(int level, bool isParseFun = false);
+    TreeNode *parseDeclareStmt(bool isParseFun = false);
 
-    TreeNode *parseAssignStmt(int level, bool isParseFor = false);
+    TreeNode *parseAssignStmt(bool isParseFor = false);
 
-    TreeNode *parseStmtBlock(int level);
+    TreeNode *parseStmtBlock();
 
-    TreeNode *parseExp(int level);
+    TreeNode *parseExp();
 
-    TreeNode *parseAddtiveExp(int level);
+    TreeNode *parseAddtiveExp();
 
-    TreeNode *parseTerm(int level);
+    TreeNode *parseTerm();
 
-    TreeNode *parseFactor(int level);
+    TreeNode *parseFactor();
 
-    TreeNode *parseLiteral(int level);
+    TreeNode *parseLiteral();
 
-    TreeNode *parseLogicOp(int level);
+    TreeNode *parseLogicOp();
 
-    TreeNode *parseAddtiveOp(int level);
+    TreeNode *parseAddtiveOp();
 
-    TreeNode *parseMutiplyOp(int level);
+    TreeNode *parseMutiplyOp();
 
-    TreeNode *parseVariableName(int level);
+    TreeNode *parseVariableName();
 
-    TreeNode *parseFunctionDeclare(int level);
+    TreeNode *parseFunctionDeclare();
 
-    TreeNode *parseFunctionCall(int level, bool isStmt = true);
+    TreeNode *parseFunctionCall(bool isStmt = true);
 
-    TreeNode *parseReturn(int level);
+    TreeNode *parseReturn();
 
-    TreeNode *parseCharacter(Token::TokenTag type, int level);
+    TreeNode *parseCharacter(Token::TokenTag type);
 
-    TreeNode *stepUntilTokenSEMI(int level);
+    TreeNode *stepUntilTokenSEMI();
 
-    TreeNode *stepUntilToken(Token::TokenTag types[], int size, int level);
+    TreeNode *stepUntilToken(Token::TokenTag types[], int size);
 
 
 public:

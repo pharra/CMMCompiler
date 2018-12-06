@@ -60,9 +60,9 @@ public:
 
     void push_back(TreeNode *node);
 
-    int getLevel() const;
+    void setChildLevels(int level);
 
-    void setLevel(int level);
+    int getLevel() const;
 
     Token *getToken() const;
 
