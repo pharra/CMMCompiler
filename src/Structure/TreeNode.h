@@ -42,6 +42,8 @@ public:
 
     TreeNodeType getTreeNodeType() const;
 
+    void setToken(Token *t);
+
     Token::TokenTag getDataType() const;
 
     std::string getValue() const;

@@ -111,10 +111,16 @@ TreeNode::TreeNodeType TreeNode::getTreeNodeType() const {
 }
 
 void TreeNode::removeCharacter() {
-    for (auto i = child.begin(); i != child.end(); ++i) {
+    for (auto i = child.begin(); i != child.end();) {
         (*i)->removeCharacter();
         if ((*i)->getTreeNodeType() == CHARACTER) {
             i = child.erase(i);
+        } else {
+            i++;
         }
     }
+}
+
+void TreeNode::setToken(Token *t) {
+    token = t;
 }
