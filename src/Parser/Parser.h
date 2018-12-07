@@ -39,6 +39,8 @@ private:
 
     TreeNode *parseStmt();
 
+    TreeNode *parseClassStmt();
+
     TreeNode *parseIfStmt();
 
     TreeNode *parseWhileStmt();
@@ -91,7 +93,7 @@ public:
 
     std::vector<TreeNode *> analyse();
 
-    std::vector<TreeNode *> clearCharaterNode(std::vector<TreeNode *> & nodeVec);
+    std::vector<TreeNode *> clearCharaterNode(std::vector<TreeNode *> &nodeVec);
 
     ~Parser();
 };

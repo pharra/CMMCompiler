@@ -178,6 +178,8 @@ TreeNode *Parser::parseStmt() {
                 return parseAssignStmt();
         case Token::RETURN:
             return parseReturn();
+        case Token::CLASS:
+            return parseClassStmt();
         case Token::END:
             return nullptr;
         default:
@@ -186,6 +188,21 @@ TreeNode *Parser::parseStmt() {
             unParsered.push_back(stepUntilTokenSEMI());
             return parseStmt();
     }
+}
+
+TreeNode *Parser::parseClassStmt() {
+    auto *node = new TreeNode(TreeNode::CLASS_DECLARE, popNextToken(Token::CLASS));
+    node->push_back(parseVariableName());
+    node->push_back(parseCharacter(Token::LEFT_BRA));
+    node->push_back(parseCharacter(Token::RIGHT_BRA));
+    auto *blockNode = new TreeNode(TreeNode::BLOCK_STMT);
+    blockNode->push_back(parseCharacter(Token::LEFT_BOUNDER));
+    while (getNextTokenType() != Token::RIGHT_BOUNDER){
+        blockNode->push_back(parseDeclareStmt());
+    }
+    blockNode->push_back(parseCharacter(Token::RIGHT_BOUNDER));
+    node->push_back(blockNode);
+    return node;
 }
 
 TreeNode *Parser::parseIfStmt() {
@@ -300,22 +317,19 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
             node->push_back(parseCharacter(Token::ASSIGN));
             if (!varNode->isArray()) {
                 node->push_back(parseExp());
-            }
-            else {    //声明时初始化数组
+            } else {    //声明时初始化数组
                 if (getNextTokenType() == Token::CHAR_VALUE)   //如果是char[] = ""
                 {
                     node->push_back(parseLiteral());
                 } else {
                     node->push_back(parseCharacter(Token::LEFT_BOUNDER));
-                    if (getNextTokenType() == Token::RIGHT_BOUNDER)
-                    {
+                    if (getNextTokenType() == Token::RIGHT_BOUNDER) {
                         node->push_back(parseCharacter(Token::LEFT_BOUNDER));
                     } else {
-                        auto * temp = new TreeNode(TreeNode::ARRAY);
+                        auto *temp = new TreeNode(TreeNode::ARRAY);
                         node->push_back(temp);
                         temp->push_back(parseExp());
-                        while (getNextTokenType() == Token::COMMA)
-                        {
+                        while (getNextTokenType() == Token::COMMA) {
                             popNextToken(Token::COMMA);
                             temp->push_back(parseExp());
                         }
