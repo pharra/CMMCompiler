@@ -169,7 +169,7 @@ TreeNode *Parser::parseStmt() {
             return parseWriteStmt();
         case Token::INT:
         case Token::REAL:
-        case Token::STRING:
+        case Token::CHAR:
             return parseDeclareStmt();
         case Token::LEFT_BOUNDER:
             return parseStmtBlock();
@@ -234,7 +234,7 @@ TreeNode *Parser::parseWhileStmt() {
 TreeNode *Parser::parseForStmt() {
     auto *node = new TreeNode(TreeNode::FOR_STMT, popNextToken(Token::FOR));
     node->push_back(parseCharacter(Token::LEFT_BRA));
-    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::STRING};
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR};
     TreeNode *first = nullptr;
     if (checkNextTokenType(type, 3)) {
         first = parseDeclareStmt();
@@ -275,8 +275,12 @@ TreeNode *Parser::parseWriteStmt() {
 }
 
 TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
-    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::STRING};
-    auto *node = new TreeNode(TreeNode::DECLARE_STMT, popNextToken(type, 3));
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR};
+    if(getNextNextTokenType()){ // 数组声明
+
+    }
+    auto *node = new TreeNode(TreeNode::DECLARE_STMT);
+
     if (getNextNextTokenType() == Token::LEFT_BRA)    //函数声明
     {
         TreeNode *funNode = parseFunctionDeclare();
@@ -383,7 +387,7 @@ TreeNode *Parser::parseTerm() {
 TreeNode *Parser::parseFactor() {
     auto *node = new TreeNode(TreeNode::FACTOR);
     switch (getNextTokenType()) {
-        case Token::CHARS:
+        case Token::CHAR_VALUE:
         case Token::NUM:
             node->push_back(parseLiteral());
             break;
@@ -443,7 +447,7 @@ TreeNode *Parser::parseVariableName() {
 TreeNode *Parser::parseFunctionDeclare() {
     auto *node = new TreeNode(TreeNode::FUNDECLARE, popNextToken(Token::IDENTIFIER));
     node->push_back(parseCharacter(Token::LEFT_BRA));
-    Token::TokenTag types[3] = {Token::INT, Token::REAL, Token::CHARS};
+    Token::TokenTag types[3] = {Token::INT, Token::REAL, Token::CHAR_VALUE};
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
     if (checkNextTokenType(types, 3)) {
         params->push_back(parseDeclareStmt(true));

@@ -18,6 +18,7 @@ std::map<std::string, Token::TokenTag> Lexer::keywordMap = {{"if",     Token::IF
                                                             {"write",  Token::WRITE},
                                                             {"int",    Token::INT},
                                                             {"real",   Token::REAL},
+                                                            {"char",   Token::CHAR},
                                                             {"break",  Token::BREAK},
                                                             {"switch", Token::SWITCH},
                                                             {"case",   Token::CASE},
@@ -183,7 +184,10 @@ Token *Lexer::getNext() {
                 tokenTag = Token::DOU_QUE;
                 continue;
             }
-            if (isdigit(currentChar) || currentChar == '.') {
+            if (currentChar == '.') {
+                tokenTag = Token::POINTER;
+            }
+            if (isdigit(currentChar)) {
                 tokenTag = Token::NUM;
             }
             if (isalpha(currentChar)) {
@@ -251,7 +255,7 @@ Token *Lexer::getNext() {
         else if (tokenTag == Token::DOU_QUE) {
             if (currentChar == '\"') {
                 stateType = DONE;
-                tokenTag = Token::CHARS;
+                tokenTag = Token::CHAR_VALUE;
             } else {
                 value.append(1, currentChar);
                 continue;
@@ -259,7 +263,7 @@ Token *Lexer::getNext() {
         } else if (tokenTag == Token::SIN_QUE) {
             if (currentChar == '\'') {
                 stateType = DONE;
-                tokenTag = Token::CHARS;
+                tokenTag = Token::CHAR_VALUE;
             } else {
                 value.append(1, currentChar);
                 continue;

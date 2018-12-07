@@ -19,11 +19,11 @@ public:
         // identifier
                 IDENTIFIER,
         // number
-                NUM,
-        // string
-                CHARS,
+                NUM, INT_VALUE, REAL_VALUE,
+        // char
+                CHAR_VALUE,
         // keyword
-                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, BREAK, SWITCH, CASE, RETURN, STRING,
+                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, CHAR, BREAK, SWITCH, CASE, RETURN,
         // operator
         // +
                 PLUS,
