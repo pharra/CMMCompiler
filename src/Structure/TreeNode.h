@@ -43,13 +43,17 @@ public:
 
     TreeNodeType getTreeNodeType() const;
 
-    const std::string &getDataType() const;
-
     const std::string &getValue() const;
 
     int getLine() const;
 
-    void setDataType(const std::string &dataType);
+    Token::TokenTag getDataType() const;
+
+    void setDataType(Token::TokenTag dataType);
+
+    bool isArray() const;
+
+    void setIsArray(bool isArray);
 
     void setValue(const std::string &value);
 
@@ -71,7 +75,8 @@ public:
 
 private:
     TreeNodeType treeNodeType;
-    std::string dataType;
+    Token::TokenTag dataType;
+    bool array;
     std::string value;
     int line;
     std::vector<TreeNode *> child;

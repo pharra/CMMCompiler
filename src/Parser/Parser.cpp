@@ -274,15 +274,12 @@ TreeNode *Parser::parseWriteStmt() {
 
 TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
     Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR};
-    std::string dataType;
-    if (getNextNextTokenType() == Token::LEFT_INDEX) { // 数组声明
-        dataType = nextToken->getTagName() + "[]";
-        popNextToken(type, 3);
+    Token::TokenTag dataType = popNextToken(type, 3)->getTag();
+    bool array = false;
+    if (getNextTokenType() == Token::LEFT_INDEX) { // 数组声明
         popNextToken(Token::LEFT_INDEX);
         popNextToken(Token::RIGHT_INDEX);
-    } else {
-        dataType = nextToken->getTagName();
-        popNextToken(type, 3);
+        array = true;
     }
     auto *node = new TreeNode(TreeNode::DECLARE_STMT);
 
@@ -290,16 +287,18 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
     {
         TreeNode *funNode = parseFunctionDeclare();
         funNode->setDataType(dataType);
+        funNode->setIsArray(array);
         node->push_back(funNode);
         node->push_back(parseStmtBlock());
     } else {        //声明变量
         TreeNode *varNode;
         varNode = parseVariableName();
         varNode->setDataType(dataType);
+        varNode->setIsArray(array);
         node->push_back(varNode);
         if (getNextTokenType() == Token::ASSIGN) {
             node->push_back(parseCharacter(Token::ASSIGN));
-            if (varNode->getDataType().find('[') == -1) {
+            if (!varNode->isArray()) {
                 node->push_back(parseExp());
             }
             else {    //声明时初始化数组

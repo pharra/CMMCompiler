@@ -33,8 +33,9 @@ TreeNode::TreeNode(TreeNodeType type, Token *t) {
     treeNodeType = type;
     value = t->getValue();
     line = t->getLine();
-    dataType = t->getTagName();
+    dataType = t->getTag();
     child = std::vector<TreeNode *>();
+    array = false;
 }
 
 TreeNode::~TreeNode() {
@@ -55,7 +56,12 @@ void TreeNode::toString() {
         std::cout << treeNodeTypeName();
     }
     if (!value.empty()) {
-        std::cout << "(value: " << value << " , type: " << dataType << " )" << std::endl;
+        std::cout << "(value: " << value << " , type: " << Token::tokenTagMap.find(dataType)->second;
+        if (array) {
+            std::cout << "[]";
+        }
+        std::cout << ")"
+                  << std::endl;
     } else {
         std::cout << std::endl;
     }
@@ -102,10 +108,6 @@ int TreeNode::getLevel() const {
     return level;
 }
 
-void TreeNode::setDataType(const std::string &dataType) {
-    TreeNode::dataType = dataType;
-}
-
 void TreeNode::setValue(const std::string &value) {
     TreeNode::value = value;
 }
@@ -114,14 +116,26 @@ void TreeNode::setLine(int line) {
     TreeNode::line = line;
 }
 
-const std::string &TreeNode::getDataType() const {
-    return dataType;
-}
-
 const std::string &TreeNode::getValue() const {
     return value;
 }
 
 int TreeNode::getLine() const {
     return line;
+}
+
+Token::TokenTag TreeNode::getDataType() const {
+    return dataType;
+}
+
+void TreeNode::setDataType(Token::TokenTag dataType) {
+    TreeNode::dataType = dataType;
+}
+
+bool TreeNode::isArray() const {
+    return array;
+}
+
+void TreeNode::setIsArray(bool isArray) {
+    TreeNode::array = isArray;
 }
