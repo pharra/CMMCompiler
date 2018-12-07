@@ -18,6 +18,7 @@ std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
         {BLOCK_STMT,   "BLOCK_STMT"},
         {RETURN_STMT,  "RETURN_STMT"},
         {EXP,          "EXP"},
+        {ARRAY,        "ARRAY"},
         {VAR,          "VAR"},
         {FUNDECLARE,   "FUNDECLARE"},
         {FUNCALL,      "FUNCALL"},

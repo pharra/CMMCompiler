@@ -24,6 +24,7 @@ public:
         BLOCK_STMT,     // block语句
         RETURN_STMT,    // return语句
         EXP,            // 表达式
+        ARRAY,          //数组初始化
         VAR,            // 变量
         FUNDECLARE,     // 函数声明
         FUNCALL,        // 函数调用
