@@ -22,7 +22,9 @@ std::map<std::string, Token::TokenTag> Lexer::keywordMap = {{"if",     Token::IF
                                                             {"break",  Token::BREAK},
                                                             {"switch", Token::SWITCH},
                                                             {"case",   Token::CASE},
-                                                            {"return", Token::RETURN}};
+                                                            {"return", Token::RETURN},
+                                                            {"new",    Token::NEW},
+                                                            {"class",  Token::CLASS}};
 typedef enum {
     START,
     IGNORE,

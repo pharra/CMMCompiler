@@ -23,7 +23,7 @@ public:
         // char
                 CHAR_VALUE,
         // keyword
-                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, CHAR, BREAK, SWITCH, CASE, RETURN,
+                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, CHAR, BREAK, SWITCH, CASE, RETURN, NEW, CLASS,
         // operator
         // +
                 PLUS,

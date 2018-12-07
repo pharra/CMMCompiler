@@ -26,6 +26,8 @@ std::map<Token::TokenTag, std::string> Token::tokenTagMap = {
         {SWITCH,        "SWITCH"},
         {CASE,          "CASE"},
         {RETURN,        "RETURN"},
+        {NEW,           "NEW"},
+        {CLASS,         "CLASS"},
         {PLUS,          "PLUS"},
         {MINUS,         "MINUS"},
         {MUL,           "MUL"},
