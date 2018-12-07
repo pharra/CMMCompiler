@@ -106,8 +106,10 @@ Token *Parser::popNextToken(Token::TokenTag type) {
         getNextToken();
         return tmp;
     } else {
-        exception = new ParserException("expected:" + Token::tokenTagMap.find(type)->second, nextToken->getLine(),
-                                        ParserException::NO_EXPECTED_TOKEN);
+        exception = new ParserException(
+                "expected:" + Token::tokenTagMap.find(type)->second + " but: " + nextToken->getValue(),
+                nextToken->getLine(),
+                ParserException::NO_EXPECTED_TOKEN);
         errorLists.push_back(exception);
         tmp = new Token(type, "ERROR", nextToken->getLine(), nextToken->getColumn(),
                         "expected:" + Token::tokenTagMap.find(type)->second,
@@ -138,7 +140,7 @@ Token *Parser::popNextToken(Token::TokenTag *types, int size) {
         }
     }
 
-    exception = new ParserException("need expected tokens", nextToken->getLine(),
+    exception = new ParserException("need expected tokens but: " + nextToken->getValue(), nextToken->getLine(),
                                     ParserException::NO_EXPECTED_TOKEN);
     errorLists.push_back(exception);
     tmp = new Token(types[0], "ERROR", nextToken->getLine(), nextToken->getColumn(),
@@ -232,7 +234,14 @@ TreeNode *Parser::parseWhileStmt() {
 TreeNode *Parser::parseForStmt() {
     auto *node = new TreeNode(TreeNode::FOR_STMT, popNextToken(Token::FOR));
     node->push_back(parseCharacter(Token::LEFT_BRA));
-    node->push_back(parseAssignStmt());
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::STRING};
+    TreeNode *first = nullptr;
+    if (checkNextTokenType(type, 3)) {
+        first = parseDeclareStmt();
+    } else {
+        first = parseAssignStmt();
+    }
+    node->push_back(first);
     node->push_back(parseExp());
     node->push_back(parseCharacter(Token::SEMI));
     node->push_back(parseAssignStmt(true));
