@@ -52,6 +52,13 @@ std::map<Token::TokenTag, std::string> Token::tokenTagMap = {
         {MUL_NOTE,      "MUL_NOTE"},
 };
 
+Token::Token() {
+    tag = UNDEFINED;
+    line = -1;
+    column = -1;
+    isError = false;
+}
+
 Token::Token(TokenTag t, std::string v, int l, int c, std::string error, bool isErr) {
     tag = t;
     value = std::move(v);

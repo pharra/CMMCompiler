@@ -53,6 +53,8 @@ public:
                 MUL_NOTE
     };
 
+    Token();
+
     /**
      * 构造token
      * @param t token类型

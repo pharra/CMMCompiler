@@ -29,7 +29,7 @@ std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
 };
 
 TreeNode::TreeNode(TreeNodeType type, Token *t) {
-    token = t;
+    token = t->clone();
     treeNodeType = type;
     child = std::vector<TreeNode *>();
 }
@@ -47,21 +47,15 @@ TreeNode::~TreeNode() {
 }
 
 Token::TokenTag TreeNode::getDataType() const {
-    if (token != nullptr) {
-        return token->getTag();
-    } else return Token::UNDEFINED;
+    return token->getTag();
 }
 
 std::string TreeNode::getValue() const {
-    if (token != nullptr) {
-        return token->getValue();
-    } else return nullptr;
+    return token->getValue();
 }
 
 int TreeNode::getLine() const {
-    if (token != nullptr) {
-        return token->getLine();
-    } else return -1;
+    return token->getLine();
 }
 
 void TreeNode::toString() {
@@ -72,7 +66,7 @@ void TreeNode::toString() {
     if (treeNodeType != NUL) {
         std::cout << treeNodeTypeName();
     }
-    if (token) {
+    if (token->getTag() != Token::UNDEFINED) {
         std::cout << "('" << token->getValue() << "')" << std::endl;
     } else {
         std::cout << std::endl;

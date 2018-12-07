@@ -36,7 +36,7 @@ public:
 
     static std::map<TreeNodeType, std::string> treeNodeTypeMap;
 
-    explicit TreeNode(TreeNodeType type, Token *t = nullptr);
+    explicit TreeNode(TreeNodeType type, Token *t = new Token());
 
     ~TreeNode();
 
