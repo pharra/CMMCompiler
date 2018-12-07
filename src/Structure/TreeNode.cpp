@@ -55,7 +55,7 @@ void TreeNode::toString() {
         std::cout << treeNodeTypeName();
     }
     if (!value.empty()) {
-        std::cout << "('" << value << "')" << std::endl;
+        std::cout << "(value: " << value << " , type: " << dataType << " )" << std::endl;
     } else {
         std::cout << std::endl;
     }
