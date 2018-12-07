@@ -57,10 +57,6 @@ public:
 
     void setResult(unsigned long long int i);
 
-    int getLine() const;
-
-    void setLine(int line);
-
 private:
     std::string op;
     std::string arg1;
