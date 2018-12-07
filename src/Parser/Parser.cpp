@@ -274,24 +274,55 @@ TreeNode *Parser::parseWriteStmt() {
 
 TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
     Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR};
-    if(getNextNextTokenType()){ // 数组声明
-
+    std::string dataType;
+    if (getNextNextTokenType() == Token::LEFT_INDEX) { // 数组声明
+        dataType = nextToken->getTagName() + "[]";
+        popNextToken(type, 3);
+        popNextToken(Token::LEFT_INDEX);
+        popNextToken(Token::RIGHT_INDEX);
+    } else {
+        dataType = nextToken->getTagName();
+        popNextToken(type, 3);
     }
     auto *node = new TreeNode(TreeNode::DECLARE_STMT);
 
     if (getNextNextTokenType() == Token::LEFT_BRA)    //函数声明
     {
         TreeNode *funNode = parseFunctionDeclare();
+        funNode->setDataType(dataType);
         node->push_back(funNode);
         node->push_back(parseStmtBlock());
     } else {        //声明变量
         TreeNode *varNode;
         varNode = parseVariableName();
+        varNode->setDataType(dataType);
         node->push_back(varNode);
         if (getNextTokenType() == Token::ASSIGN) {
             node->push_back(parseCharacter(Token::ASSIGN));
-            if (varNode->getChild().empty()) {
+            if (varNode->getDataType().find('[') == -1) {
                 node->push_back(parseExp());
+            }
+            else {    //声明时初始化数组
+                if (getNextTokenType() == Token::CHAR_VALUE)   //如果是char[] = ""
+                {
+                    node->push_back(parseLiteral());
+                } else {
+                    node->push_back(parseCharacter(Token::LEFT_BOUNDER));
+                    if (getNextTokenType() == Token::RIGHT_BOUNDER)
+                    {
+                        node->push_back(parseCharacter(Token::LEFT_BOUNDER));
+                    } else {
+                        auto * temp = new TreeNode(TreeNode::ARRAY);
+                        node->push_back(temp);
+                        temp->push_back(parseExp());
+                        while (getNextTokenType() == Token::COMMA)
+                        {
+                            popNextToken(Token::COMMA);
+                            temp->push_back(parseExp());
+                        }
+                        node->push_back(parseCharacter(Token::RIGHT_BOUNDER));
+                    }
+                }
             }
         }
         if (isParseFun) {
