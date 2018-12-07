@@ -487,7 +487,7 @@ TreeNode *Parser::parseVariableName() {
 
 
 TreeNode *Parser::parseFunctionDeclare() {
-    auto *node = new TreeNode(TreeNode::FUNDECLARE, popNextToken(Token::IDENTIFIER));
+    auto *node = new TreeNode(TreeNode::FUNCTION_DECLARE, popNextToken(Token::IDENTIFIER));
     node->push_back(parseCharacter(Token::LEFT_BRA));
     Token::TokenTag types[3] = {Token::INT, Token::REAL, Token::CHAR_VALUE};
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
@@ -511,7 +511,7 @@ TreeNode *Parser::parseFunctionDeclare() {
 
 
 TreeNode *Parser::parseFunctionCall(bool isStmt) {
-    auto *node = new TreeNode(TreeNode::FUNCALL, popNextToken(Token::IDENTIFIER));
+    auto *node = new TreeNode(TreeNode::FUNCTION_CALL, popNextToken(Token::IDENTIFIER));
     node->push_back(parseCharacter(Token::LEFT_BRA));
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
     if (getNextTokenType() != Token::RIGHT_BRA) {
@@ -538,7 +538,7 @@ TreeNode *Parser::parseReturn() {
 }
 
 TreeNode *Parser::stepUntilTokenSEMI() {
-    auto *root = new TreeNode(TreeNode::ERRORSTEP);
+    auto *root = new TreeNode(TreeNode::ERROR_STEP);
     while (getNextTokenType() != Token::SEMI) {
         Token *tmp = popNextToken(getNextTokenType());
         if (tmp == nullptr) {
@@ -552,7 +552,7 @@ TreeNode *Parser::stepUntilTokenSEMI() {
 }
 
 TreeNode *Parser::stepUntilToken(Token::TokenTag *types, int size) {
-    auto *root = new TreeNode(TreeNode::ERRORSTEP);
+    auto *root = new TreeNode(TreeNode::ERROR_STEP);
     Token *tmp;
     bool isToken = false;
     while (true) {

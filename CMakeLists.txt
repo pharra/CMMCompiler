@@ -3,7 +3,6 @@ project(CMMCompiler)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-static")
-# set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++")
 include_directories(src)
 
 add_executable(CMMCompiler
@@ -15,7 +14,12 @@ add_executable(CMMCompiler
         src/Parser/Parser.cpp src/Parser/Parser.h
         src/Structure/TreeNode.cpp src/Structure/TreeNode.h
         src/Parser/ParserException.cpp src/Parser/ParserException.h
-        src/Lexer/SymbolTable.cpp src/Lexer/SymbolTable.h)
+        src/Structure/SymbolTable.cpp src/Structure/SymbolTable.h
+        src/Structure/Symbol.cpp src/Structure/Symbol.h
+        #src/semantic/Semantic.cpp src/semantic/Semantic.h
+        src/Structure/Quaternary.cpp src/Structure/Quaternary.h
+        src/semantic/SemanticException.cpp src/semantic/SemanticException.h
+        src/Structure/Value.cpp src/Structure/Value.h)
 
 find_package(Threads REQUIRED)
 target_link_libraries(CMMCompiler Threads::Threads)
