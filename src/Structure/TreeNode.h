@@ -23,15 +23,17 @@ public:
         ASSIGN_STMT,    // 赋值语句
         BLOCK_STMT,     // block语句
         RETURN_STMT,    // return语句
+        NEW_STMT,       // new语句
+        CLASS_DECLARE,   // 类声明
         EXP,            // 表达式
         ARRAY,          //数组初始化
         VAR,            // 变量
-        FUNDECLARE,     // 函数声明
-        FUNCALL,        // 函数调用
+        FUNCTION_DECLARE,     // 函数声明
+        FUNCTION_CALL,        // 函数调用
         OP,             // 运算符
         FACTOR,         // 因子
         LITERAL,        // 字面值
-        ERRORSTEP,      // 跳过错误
+        ERROR_STEP,      // 跳过错误
         PARAMS_STMT,    // 参数声明，传入
     };
 
