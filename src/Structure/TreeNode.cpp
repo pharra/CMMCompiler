@@ -29,33 +29,20 @@ std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
 };
 
 TreeNode::TreeNode(TreeNodeType type, Token *t) {
-    token = t->clone();
     treeNodeType = type;
+    value = t->getValue();
+    line = t->getLine();
+    dataType = t->getTagName();
     child = std::vector<TreeNode *>();
 }
 
 TreeNode::~TreeNode() {
-    delete token;
-    token = nullptr;
-
     for (auto i:child) {
         delete i;
         i = nullptr;
     }
     child.clear();
 
-}
-
-Token::TokenTag TreeNode::getDataType() const {
-    return token->getTag();
-}
-
-std::string TreeNode::getValue() const {
-    return token->getValue();
-}
-
-int TreeNode::getLine() const {
-    return token->getLine();
 }
 
 void TreeNode::toString() {
@@ -66,8 +53,8 @@ void TreeNode::toString() {
     if (treeNodeType != NUL) {
         std::cout << treeNodeTypeName();
     }
-    if (token->getTag() != Token::UNDEFINED) {
-        std::cout << "('" << token->getValue() << "')" << std::endl;
+    if (!value.empty()) {
+        std::cout << "('" << value << "')" << std::endl;
     } else {
         std::cout << std::endl;
     }
@@ -88,10 +75,6 @@ void TreeNode::push_back(TreeNode *node) {
     child.push_back(node);
 }
 
-Token *TreeNode::getToken() const {
-    return token;
-}
-
 TreeNode::TreeNodeType TreeNode::getTreeNodeType() const {
     return treeNodeType;
 }
@@ -107,10 +90,6 @@ void TreeNode::removeCharacter() {
     }
 }
 
-void TreeNode::setToken(Token *t) {
-    token = t;
-}
-
 void TreeNode::setChildLevels(int level) {
     TreeNode::level = level;
     for (auto &i:child) {
@@ -120,4 +99,28 @@ void TreeNode::setChildLevels(int level) {
 
 int TreeNode::getLevel() const {
     return level;
+}
+
+void TreeNode::setDataType(const std::string &dataType) {
+    TreeNode::dataType = dataType;
+}
+
+void TreeNode::setValue(const std::string &value) {
+    TreeNode::value = value;
+}
+
+void TreeNode::setLine(int line) {
+    TreeNode::line = line;
+}
+
+const std::string &TreeNode::getDataType() const {
+    return dataType;
+}
+
+const std::string &TreeNode::getValue() const {
+    return value;
+}
+
+int TreeNode::getLine() const {
+    return line;
 }

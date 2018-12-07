@@ -42,13 +42,17 @@ public:
 
     TreeNodeType getTreeNodeType() const;
 
-    void setToken(Token *t);
+    const std::string &getDataType() const;
 
-    Token::TokenTag getDataType() const;
-
-    std::string getValue() const;
+    const std::string &getValue() const;
 
     int getLine() const;
+
+    void setDataType(const std::string &dataType);
+
+    void setValue(const std::string &value);
+
+    void setLine(int line);
 
     void removeCharacter();
 
@@ -64,11 +68,11 @@ public:
 
     int getLevel() const;
 
-    Token *getToken() const;
-
 private:
     TreeNodeType treeNodeType;
-    Token *token;
+    std::string dataType;
+    std::string value;
+    int line;
     std::vector<TreeNode *> child;
     int level = 0;
 
