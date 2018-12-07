@@ -6,29 +6,30 @@
 #include "TreeNode.h"
 
 std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
-        {NUL,          "NUL"},
-        {CHARACTER,    "CHARACTER"},
-        {IF_STMT,      "IF_STMT"},
-        {WHILE_STMT,   "WHILE_STMT"},
-        {FOR_STMT,     "FOR_STMT"},
-        {READ_STMT,    "READ_STMT"},
-        {WRITE_STMT,   "WRITE_STMT"},
-        {DECLARE_STMT, "DECLARE_STMT"},
-        {ASSIGN_STMT,  "ASSIGN_STMT"},
-        {BLOCK_STMT,   "BLOCK_STMT"},
-        {RETURN_STMT,  "RETURN_STMT"},
-        {NEW_STMT,     "NEW_STMT"},
-        {CLASS_DECLARE, "CLASS_DECLARE"},
-        {EXP,          "EXP"},
-        {ARRAY,        "ARRAY"},
-        {VAR,          "VAR"},
-        {FUNCTION_DECLARE,   "FUNCTION_DECLARE"},
-        {FUNCTION_CALL,      "FUNCTION_CALL"},
-        {OP,           "OP"},
-        {FACTOR,       "FACTOR"},
-        {LITERAL,      "LITERAL"},
-        {ERROR_STEP,    "ERROR_STEP"},
-        {PARAMS_STMT,  "PARAMS_STMT"},
+        {NUL,               "NUL"},
+        {CHARACTER,         "CHARACTER"},
+        {IF_STMT,           "IF_STMT"},
+        {WHILE_STMT,        "WHILE_STMT"},
+        {FOR_STMT,          "FOR_STMT"},
+        {READ_STMT,         "READ_STMT"},
+        {WRITE_STMT,        "WRITE_STMT"},
+        {DECLARE_STMT,      "DECLARE_STMT"},
+        {ASSIGN_STMT,       "ASSIGN_STMT"},
+        {BLOCK_STMT,        "BLOCK_STMT"},
+        {RETURN_STMT,       "RETURN_STMT"},
+        {NEW_STMT,          "NEW_STMT"},
+        {CLASS_DECLARE,     "CLASS_DECLARE"},
+        {CLASS_CONSTRUCTOR, "CLASS_CONSTRUCTOR"},
+        {EXP,               "EXP"},
+        {ARRAY,             "ARRAY"},
+        {VAR,               "VAR"},
+        {FUNCTION_DECLARE,  "FUNCTION_DECLARE"},
+        {FUNCTION_CALL,     "FUNCTION_CALL"},
+        {OP,                "OP"},
+        {FACTOR,            "FACTOR"},
+        {LITERAL,           "LITERAL"},
+        {ERROR_STEP,        "ERROR_STEP"},
+        {PARAMS_STMT,       "PARAMS_STMT"},
 };
 
 TreeNode::TreeNode(TreeNodeType type, Token *t) {
@@ -58,7 +59,12 @@ void TreeNode::toString() {
         std::cout << treeNodeTypeName();
     }
     if (!value.empty()) {
-        std::cout << "(value: " << value << " , type: " << Token::tokenTagMap.find(dataType)->second;
+        std::cout << "(value: " << value << " , type: ";
+        if (dataType == Token::CLASS_NAME) {
+            std::cout << dataTypeValue;
+        } else {
+            std::cout << Token::tokenTagMap.find(dataType)->second;
+        }
         if (array) {
             std::cout << "[]";
         }
@@ -140,4 +146,12 @@ bool TreeNode::isArray() const {
 
 void TreeNode::setIsArray(bool isArray) {
     TreeNode::array = isArray;
+}
+
+const std::string &TreeNode::getDataTypeValue() const {
+    return dataTypeValue;
+}
+
+void TreeNode::setDataTypeValue(const std::string &dataTypeValue) {
+    TreeNode::dataTypeValue = dataTypeValue;
 }

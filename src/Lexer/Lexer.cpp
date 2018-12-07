@@ -319,3 +319,7 @@ Lexer::~Lexer() {
     regex = nullptr;
 }
 
+void Lexer::pushNewClass(std::string className) {
+    keywordMap.insert(std::map<std::string, Token::TokenTag>::value_type(className, Token::CLASS_NAME));
+}
+

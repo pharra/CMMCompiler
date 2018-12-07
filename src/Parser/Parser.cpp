@@ -179,7 +179,9 @@ TreeNode *Parser::parseStmt() {
         case Token::RETURN:
             return parseReturn();
         case Token::CLASS:
-            return parseClassStmt();
+            return parseClassDeclare();
+        case Token::NEW:
+            return parseNewStmt();
         case Token::END:
             return nullptr;
         default:
@@ -190,14 +192,24 @@ TreeNode *Parser::parseStmt() {
     }
 }
 
-TreeNode *Parser::parseClassStmt() {
+TreeNode *Parser::parseClassDeclare() {
     auto *node = new TreeNode(TreeNode::CLASS_DECLARE, popNextToken(Token::CLASS));
-    node->push_back(parseVariableName());
+    TreeNode *t = parseVariableName();
+    const std::string &newClass = t->getValue();
+    lexer->pushNewClass(newClass);
+    // node->push_back(t);
     node->push_back(parseCharacter(Token::LEFT_BRA));
     node->push_back(parseCharacter(Token::RIGHT_BRA));
     auto *blockNode = new TreeNode(TreeNode::BLOCK_STMT);
     blockNode->push_back(parseCharacter(Token::LEFT_BOUNDER));
-    while (getNextTokenType() != Token::RIGHT_BOUNDER){
+    while (getNextTokenType() != Token::RIGHT_BOUNDER) {
+        if (getNextTokenType() == Token::CLASS_NAME && nextToken->getValue() == newClass &&
+            getNextNextTokenType() == Token::LEFT_BRA) {
+            auto *classConstructorNode = parseFunctionDeclare(true);
+            classConstructorNode->setDataTypeValue(newClass);
+            node->push_back(classConstructorNode);
+            classConstructorNode->push_back(parseStmtBlock());
+        }
         blockNode->push_back(parseDeclareStmt());
     }
     blockNode->push_back(parseCharacter(Token::RIGHT_BOUNDER));
@@ -249,9 +261,9 @@ TreeNode *Parser::parseWhileStmt() {
 TreeNode *Parser::parseForStmt() {
     auto *node = new TreeNode(TreeNode::FOR_STMT, popNextToken(Token::FOR));
     node->push_back(parseCharacter(Token::LEFT_BRA));
-    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR};
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR, Token::CLASS_NAME};
     TreeNode *first = nullptr;
-    if (checkNextTokenType(type, 3)) {
+    if (checkNextTokenType(type, 4)) {
         first = parseDeclareStmt();
     } else {
         first = parseAssignStmt();
@@ -289,9 +301,24 @@ TreeNode *Parser::parseWriteStmt() {
     return node;
 }
 
+TreeNode *Parser::parseNewStmt() {
+    auto *node = new TreeNode(TreeNode::NEW_STMT, popNextToken(Token::NEW));
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR, Token::CLASS_NAME};
+    auto *typeToken = popNextToken(type, 4);
+    node->setDataType(typeToken->getTag());
+    node->setDataTypeValue(typeToken->getValue());
+    node->push_back(parseCharacter(Token::LEFT_INDEX));
+    node->push_back(parseExp());
+    node->push_back(parseCharacter(Token::RIGHT_INDEX));
+    // node->push_back(parseCharacter(Token::SEMI));
+    return node;
+}
+
 TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
-    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR};
-    Token::TokenTag dataType = popNextToken(type, 3)->getTag();
+    Token::TokenTag type[] = {Token::INT, Token::REAL, Token::CHAR, Token::CLASS_NAME};
+    Token *typeToken = popNextToken(type, 4);
+    Token::TokenTag dataType = typeToken->getTag();
+    const std::string &dataTypeValue = typeToken->getValue();
     bool array = false;
     if (getNextTokenType() == Token::LEFT_INDEX) { // 数组声明
         popNextToken(Token::LEFT_INDEX);
@@ -305,6 +332,7 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
         TreeNode *funNode = parseFunctionDeclare();
         funNode->setDataType(dataType);
         funNode->setIsArray(array);
+        funNode->setDataTypeValue(dataTypeValue);
         node->push_back(funNode);
         node->push_back(parseStmtBlock());
     } else {        //声明变量
@@ -312,6 +340,7 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
         varNode = parseVariableName();
         varNode->setDataType(dataType);
         varNode->setIsArray(array);
+        varNode->setDataTypeValue(dataTypeValue);
         node->push_back(varNode);
         if (getNextTokenType() == Token::ASSIGN) {
             node->push_back(parseCharacter(Token::ASSIGN));
@@ -321,6 +350,8 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
                 if (getNextTokenType() == Token::CHAR_VALUE)   //如果是char[] = ""
                 {
                     node->push_back(parseLiteral());
+                } else if (getNextTokenType() == Token::NEW) {
+                    node->push_back(parseNewStmt());
                 } else {
                     node->push_back(parseCharacter(Token::LEFT_BOUNDER));
                     if (getNextTokenType() == Token::RIGHT_BOUNDER) {
@@ -486,16 +517,21 @@ TreeNode *Parser::parseVariableName() {
 }
 
 
-TreeNode *Parser::parseFunctionDeclare() {
-    auto *node = new TreeNode(TreeNode::FUNCTION_DECLARE, popNextToken(Token::IDENTIFIER));
+TreeNode *Parser::parseFunctionDeclare(bool isConstructor) {
+    TreeNode *node = nullptr;
+    if (isConstructor) {
+        node = new TreeNode(TreeNode::CLASS_CONSTRUCTOR, popNextToken(Token::CLASS_NAME));
+    } else {
+        node = new TreeNode(TreeNode::FUNCTION_DECLARE, popNextToken(Token::IDENTIFIER));
+    }
     node->push_back(parseCharacter(Token::LEFT_BRA));
-    Token::TokenTag types[3] = {Token::INT, Token::REAL, Token::CHAR_VALUE};
+    Token::TokenTag types[4] = {Token::INT, Token::REAL, Token::CHAR, Token::CLASS_NAME};
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
-    if (checkNextTokenType(types, 3)) {
+    if (checkNextTokenType(types, 4)) {
         params->push_back(parseDeclareStmt(true));
         while (getNextTokenType() != Token::RIGHT_BRA) {
             params->push_back(parseCharacter(Token::COMMA));
-            if (!checkNextTokenType(types, 3)) {
+            if (!checkNextTokenType(types, 4)) {
                 errorLists.push_back(new ParserException("Invalid declare function params stmt", nextToken->getLine(),
                                                          ParserException::NO_EXPECTED_TOKEN));
                 Token::TokenTag forStep[] = {Token::COMMA, Token::RIGHT_BRA};
@@ -580,6 +616,3 @@ std::vector<TreeNode *> Parser::clearCharaterNode(std::vector<TreeNode *> &nodeV
     }
     return nodeVec;
 }
-
-
-

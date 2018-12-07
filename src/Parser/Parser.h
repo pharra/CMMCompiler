@@ -24,6 +24,7 @@ private:
     std::list<ParserException *> errorLists;
     std::list<TreeNode *> unParsered;
     std::vector<TreeNode *> treeNodeVec;
+    std::list<std::string> classList;
 
     Token *popNextToken(Token::TokenTag type);
 
@@ -39,7 +40,7 @@ private:
 
     TreeNode *parseStmt();
 
-    TreeNode *parseClassStmt();
+    TreeNode *parseClassDeclare();
 
     TreeNode *parseIfStmt();
 
@@ -50,6 +51,8 @@ private:
     TreeNode *parseReadStmt();
 
     TreeNode *parseWriteStmt();
+
+    TreeNode *parseNewStmt();
 
     TreeNode *parseDeclareStmt(bool isParseFun = false);
 
@@ -75,7 +78,7 @@ private:
 
     TreeNode *parseVariableName();
 
-    TreeNode *parseFunctionDeclare();
+    TreeNode *parseFunctionDeclare(bool isConstructor = false);
 
     TreeNode *parseFunctionCall(bool isStmt = true);
 

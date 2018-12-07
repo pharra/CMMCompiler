@@ -30,6 +30,8 @@ public:
 
     Token *getNext();
 
+    void pushNewClass(std::string className);
+
     ~Lexer();
 
     // 识别关键字

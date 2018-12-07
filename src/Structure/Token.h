@@ -13,44 +13,92 @@ class Token {
 public:
     enum TokenTag {
         // undefined
-                UNDEFINED,
+
+        UNDEFINED,
         // file end
-                END,
+
+        END,
         // identifier
-                IDENTIFIER,
+
+        IDENTIFIER,
         // number
-                NUM, INT_VALUE, REAL_VALUE,
+
+        NUM,
+        INT_VALUE,
+        REAL_VALUE,
         // char
-                CHAR_VALUE,
+
+        CHAR_VALUE,
         // keyword
-                KEYWORD, IF, ELSE, WHILE, FOR, READ, WRITE, INT, REAL, CHAR, BREAK, SWITCH, CASE, RETURN, NEW, CLASS,
+
+        IF,
+        ELSE,
+        WHILE,
+        FOR,
+        READ,
+        WRITE,
+        INT,
+        REAL,
+        CHAR,
+        BREAK,
+        SWITCH,
+        CASE,
+        RETURN,
+        NEW,
+        CLASS,
+        CLASS_NAME,
         // operator
         // +
-                PLUS,
+
+        PLUS,
         // -
-                MINUS,
+
+        MINUS,
         // *
-                MUL,
+
+        MUL,
         // /
-                DIV,
+
+        DIV,
         // %
-                MOD,
+
+        MOD,
         // = < <= > >= == <>
-                ASSIGN, LES, LES_EQL, GRT, GRT_EQL, EQL, NOT_EQL,
+
+        ASSIGN,
+        LES,
+        LES_EQL,
+        GRT,
+        GRT_EQL,
+        EQL,
+        NOT_EQL,
         // separator
         // ( )
-                LEFT_BRA, RIGHT_BRA,
+
+        LEFT_BRA,
+        RIGHT_BRA,
         // [ ]
-                LEFT_INDEX, RIGHT_INDEX,
+
+        LEFT_INDEX,
+        RIGHT_INDEX,
         // { }
-                LEFT_BOUNDER, RIGHT_BOUNDER,
+
+        LEFT_BOUNDER,
+        RIGHT_BOUNDER,
         // . , ; ' "
-                POINTER, COMMA, SEMI, SIN_QUE, DOU_QUE,
+
+        POINTER,
+        COMMA,
+        SEMI,
+        SIN_QUE,
+        DOU_QUE,
         // annotation
         // //
-                LINE_NOTE,
+
+        LINE_NOTE,
         // /* */
-                MUL_NOTE
+
+        MUL_NOTE
     };
 
     Token();

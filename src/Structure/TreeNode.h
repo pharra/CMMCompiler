@@ -25,6 +25,7 @@ public:
         RETURN_STMT,    // return语句
         NEW_STMT,       // new语句
         CLASS_DECLARE,   // 类声明
+        CLASS_CONSTRUCTOR, // 类构造器
         EXP,            // 表达式
         ARRAY,          //数组初始化
         VAR,            // 变量
@@ -75,9 +76,14 @@ public:
 
     int getLevel() const;
 
+    const std::string &getDataTypeValue() const;
+
+    void setDataTypeValue(const std::string &dataTypeValue);
+
 private:
     TreeNodeType treeNodeType;
     Token::TokenTag dataType;
+    std::string dataTypeValue;
     bool array;
     std::string value;
     int line;
