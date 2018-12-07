@@ -110,6 +110,7 @@ Token *Parser::popNextToken(Token::TokenTag type) {
         tmp = new Token(type, "ERROR", nextToken->getLine(), nextToken->getColumn(),
                         "expected:" + Token::tokenTagMap.find(type)->second,
                         true);
+        tokens.push_back(tmp);
         return tmp;
     }
 }
@@ -142,6 +143,7 @@ Token *Parser::popNextToken(Token::TokenTag *types, int size) {
     tmp = new Token(types[0], "ERROR", nextToken->getLine(), nextToken->getColumn(),
                     "need expected tokens",
                     true);
+    tokens.push_back(tmp);
     return tmp;
 }
 
