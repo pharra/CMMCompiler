@@ -8,9 +8,6 @@ Parser::Parser(std::string path) {
     lexer = new Lexer(std::move(path));
     nextToken = nullptr;
     nextNextToken = nullptr;
-//    errorLists = std::list<ParserException *>();
-//    ignoreTokens = std::list<Token *>();
-//    unParsered = std::list<TreeNode *>();
 }
 
 Parser::~Parser() {
@@ -23,11 +20,11 @@ Parser::~Parser() {
     }
     errorLists.clear();
 
-    for (auto i:ignoreTokens) {
+    for (auto i:tokens) {
         delete i;
         i = nullptr;
     }
-    ignoreTokens.clear();
+    tokens.clear();
 
     for (auto i:unParsered) {
         delete i;
@@ -62,15 +59,14 @@ void Parser::getNextToken() {
         nextToken = lexer->getNext();
         nextNextToken = lexer->getNext();
     } else {
+        tokens.push_back(nextToken);
         nextToken = nextNextToken;
         nextNextToken = lexer->getNext();
     }
     if (getNextTokenType() == Token::MUL_NOTE || getNextTokenType() == Token::LINE_NOTE) {
-        ignoreTokens.push_back(nextToken);
         getNextToken();
     }
     while (getNextNextTokenType() == Token::MUL_NOTE || getNextNextTokenType() == Token::LINE_NOTE) {
-        ignoreTokens.push_back(nextToken);
         nextNextToken = lexer->getNext();
     }
     /*if (getNextTokenType() == Token::END) {

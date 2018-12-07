@@ -20,8 +20,8 @@ private:
     Lexer *lexer;
     Token *nextToken;
     Token *nextNextToken;
+    std::list<Token *> tokens;
     std::list<ParserException *> errorLists;
-    std::list<Token *> ignoreTokens;
     std::list<TreeNode *> unParsered;
     std::vector<TreeNode *> treeNodeVec;
 
