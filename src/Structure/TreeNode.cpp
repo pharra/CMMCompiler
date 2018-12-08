@@ -50,32 +50,34 @@ TreeNode::~TreeNode() {
 
 }
 
-void TreeNode::toString() {
+const std::string TreeNode::toString() {
+    std::stringstream stringStream;
     for (int i = 0; i < level; i++) {
-        std::cout << "  ";
+        stringStream << "  ";
     }
-    std::cout << ">";
+    stringStream << ">";
     if (treeNodeType != NUL) {
-        std::cout << treeNodeTypeName();
+        stringStream << treeNodeTypeName();
     }
     if (!value.empty()) {
-        std::cout << "(value: " << value << " , type: ";
+        stringStream << "(value: " << value << " , type: ";
         if (dataType == Token::CLASS_NAME) {
-            std::cout << dataTypeValue;
+            stringStream << dataTypeValue;
         } else {
-            std::cout << Token::tokenTagMap.find(dataType)->second;
+            stringStream << Token::tokenTagMap.find(dataType)->second;
         }
         if (array) {
-            std::cout << "[]";
+            stringStream << "[]";
         }
-        std::cout << ")"
-                  << std::endl;
+        stringStream << ")"
+                     << '\n';
     } else {
-        std::cout << std::endl;
+        stringStream << '\n';
     }
     for (auto &i : child) {
-        i->toString();
+        stringStream << i->toString();
     }
+    return stringStream.str();
 }
 
 std::string TreeNode::treeNodeTypeName() const {

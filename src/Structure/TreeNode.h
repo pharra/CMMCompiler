@@ -7,7 +7,7 @@
 
 #include "Token.h"
 #include <vector>
-#include <iostream>
+#include <sstream>
 
 class TreeNode {
 public:
@@ -64,7 +64,7 @@ public:
 
     void removeCharacter();
 
-    void toString();
+    const std::string toString();
 
     std::string treeNodeTypeName() const;
 

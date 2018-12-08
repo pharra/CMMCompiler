@@ -3,7 +3,7 @@
 #include "Structure/Token.h"
 #include "Parser/Parser.h"
 #include "Structure/TreeNode.h"
-#include <sstream>
+#include <fstream>
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {
@@ -11,9 +11,13 @@ int main(int argc, char *argv[]) {
         return 1;
     }
     Parser parser = Parser(argv[1]);
-    TreeNode *root = parser.analyse();
-    if (root->getNext())
-        root->getNext()->toString();
-    delete root;
+    auto treeNodeVec = parser.analyse();
+    treeNodeVec = parser.clearCharaterNode(treeNodeVec);
+    std::string parserFile = std::string(argv[1]) + ".parser";
+    std::ofstream file(parserFile);
+    for (auto i: treeNodeVec) {
+        file << i->toString();
+    }
+    file.close();
     return 0;
 }
