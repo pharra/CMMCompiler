@@ -355,7 +355,7 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
                 } else {
                     node->push_back(parseCharacter(Token::LEFT_BOUNDER));
                     if (getNextTokenType() == Token::RIGHT_BOUNDER) {
-                        node->push_back(parseCharacter(Token::LEFT_BOUNDER));
+                        node->push_back(parseCharacter(Token::RIGHT_BOUNDER));
                     } else {
                         auto *temp = new TreeNode(TreeNode::ARRAY);
                         node->push_back(temp);
@@ -379,7 +379,13 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
 
 TreeNode *Parser::parseAssignStmt(bool isParseFor) {
     auto *node = new TreeNode(TreeNode::ASSIGN_STMT);
-    node->push_back(parseVariableName());
+    auto *varNode = parseVariableName();
+    node->push_back(varNode);
+    if (getNextTokenType() == Token::LEFT_INDEX) {
+        varNode->push_back(parseCharacter(Token::LEFT_INDEX));
+        varNode->push_back(parseExp());
+        varNode->push_back(parseCharacter(Token::RIGHT_INDEX));
+    }
     node->push_back(parseCharacter(Token::ASSIGN));
     node->push_back(parseExp());
     if (isParseFor) {
