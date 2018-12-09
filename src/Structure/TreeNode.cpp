@@ -38,7 +38,7 @@ TreeNode::TreeNode(TreeNodeType type, Token *t) {
     line = t->getLine();
     dataType = t->getTag();
     child = std::vector<TreeNode *>();
-    array = false;
+    _isArray = false;
 }
 
 TreeNode::~TreeNode() {
@@ -60,13 +60,13 @@ const std::string TreeNode::toString() {
         stringStream << treeNodeTypeName();
     }
     if (!value.empty()) {
-        stringStream << "(value: " << value << " , type: ";
+        stringStream << "(name: " << value << " , type: ";
         if (dataType == Token::CLASS_NAME) {
             stringStream << dataTypeValue;
         } else {
             stringStream << Token::tokenTagMap.find(dataType)->second;
         }
-        if (array) {
+        if (_isArray) {
             stringStream << "[]";
         }
         stringStream << ")"
@@ -143,11 +143,11 @@ void TreeNode::setDataType(Token::TokenTag dataType) {
 }
 
 bool TreeNode::isArray() const {
-    return array;
+    return _isArray;
 }
 
 void TreeNode::setIsArray(bool isArray) {
-    TreeNode::array = isArray;
+    TreeNode::_isArray = isArray;
 }
 
 const std::string &TreeNode::getDataTypeValue() const {

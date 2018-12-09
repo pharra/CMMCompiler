@@ -84,7 +84,7 @@ private:
     TreeNodeType treeNodeType;
     Token::TokenTag dataType;
     std::string dataTypeValue;
-    bool array;
+    bool _isArray;
     std::string value;
     int line;
     std::vector<TreeNode *> child;
