@@ -25,6 +25,8 @@ public:
 
     bool insertVar(VarSymbol *symbol);
 
+    bool insertFunc(FunctionSymbol *symbol);
+
     AbstractSymbol *isDeclared(std::string key);
 
     VarSymbol *getNewTempSymbol();

@@ -33,8 +33,17 @@ bool SymbolTable::insertVar(VarSymbol *symbol) {
     if (table->table.find(symbol->getName()) != table->table.end()) {
         return false;
     }
-    table->table.insert(std::map<std::string, AbstractSymbol *>::value_type(symbol->getName(),
-                                                                            symbol));
+    table->table.insert(std::map<std::string, VarSymbol *>::value_type(symbol->getName(),
+                                                                       symbol));
+    return true;
+}
+
+bool SymbolTable::insertFunc(FunctionSymbol *symbol) {
+    if (funcTable.find(symbol->getName()) != funcTable.end()) {
+        return false;
+    }
+    funcTable.insert(std::map<std::string, FunctionSymbol *>::value_type(symbol->getName(),
+                                                                         symbol));
     return true;
 }
 
