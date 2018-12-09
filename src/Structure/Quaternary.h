@@ -7,19 +7,19 @@
 
 #include <string>
 
+#include "Utils/Common.h"
+
 class Quaternary {
 public:
     static const std::string JMP;
     static const std::string READ;
     static const std::string WRITE;
-    static const std::string IN;
-    static const std::string OUT;
+    static const std::string _IN;
+    static const std::string _OUT;
     static const std::string INT;
     static const std::string REAL;
     static const std::string CHAR;
-    static const std::string INT_POINT;
-    static const std::string REAL_POINT;
-    static const std::string CHAR_POINT;
+    static const std::string ARRAY;
     static const std::string ASSIGN;
     static const std::string PLUS;
     static const std::string MINUS;
@@ -31,13 +31,11 @@ public:
     static const std::string LET;
     static const std::string EQ;
     static const std::string NEQ;
-    static const std::string ADDR;
     static const std::string CALL;
     static const std::string CALLFH;
-    static const std::string VOID;
 
     Quaternary(const std::string &op, const std::string &arg1, const std::string &arg2 = nullptr,
-               const std::string &result = nullptr);
+               const std::string &result = nullptr, _dataSize line);
 
     const std::string &getOp() const;
 
@@ -62,6 +60,7 @@ private:
     std::string arg1;
     std::string arg2;
     std::string result;
+    _dataSize line;
 };
 
 
