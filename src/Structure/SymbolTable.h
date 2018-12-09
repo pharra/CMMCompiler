@@ -9,33 +9,39 @@
 #include <string>
 #include <list>
 
-#include "Symbol.h"
+#include "VarSymbol.h"
+#include "FunctionSymbol.h"
 #include "Structure/TreeNode.h"
 
 class SymbolTable {
 public:
     SymbolTable();
 
+    ~SymbolTable();
+
     void insertTable();
 
     void destroyTable();
 
-    bool insertVar(Symbol * symbol);
+    bool insertVar(VarSymbol *symbol);
 
-    bool find(std::string key);
+    AbstractSymbol *isDeclared(std::string key);
 
-    std::string getNewTempSymbolName();
+    VarSymbol *getNewTempSymbol();
 
     void clear();
 
-    ~SymbolTable();
-
+    /**
+     * if table level is 0, return true, else false
+     * @return bool
+     */
+    bool isRoot();
 
 private:
     int tmpPostFix = 0;
 
     struct Table {
-        std::map<std::string, Symbol *> table;
+        std::map<std::string, AbstractSymbol *> table;
         Table *parent;
 
         Table() {
@@ -49,8 +55,10 @@ private:
     };
 
     Table *table;
+    Table *root;
+    std::map<std::string, VarSymbol *> tmpTable;
+    std::map<std::string, FunctionSymbol *> funcTable;
 
-    std::map<std::string, Symbol *> tmpTable;
 };
 
 

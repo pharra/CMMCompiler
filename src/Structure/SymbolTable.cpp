@@ -6,6 +6,13 @@
 
 SymbolTable::SymbolTable() {
     table = new Table;
+    root = table;
+}
+
+SymbolTable::~SymbolTable() {
+    delete table;
+    table = nullptr;
+    root = nullptr;
 }
 
 void SymbolTable::destroyTable() {
@@ -22,24 +29,25 @@ void SymbolTable::insertTable() {
     table = tmp;
 }
 
-bool SymbolTable::insertVar(Symbol * symbol) {
-    if (table->table.find(symbol->getValue()) != table->table.end()) {
+bool SymbolTable::insertVar(VarSymbol *symbol) {
+    if (table->table.find(symbol->getName()) != table->table.end()) {
         return false;
     }
-    table->table.insert(std::map<std::string, Symbol *>::value_type(symbol->getValue(),
-                                                                    symbol));
+    table->table.insert(std::map<std::string, AbstractSymbol *>::value_type(symbol->getName(),
+                                                                            symbol));
     return true;
 }
 
-bool SymbolTable::find(std::string key) {
+AbstractSymbol *SymbolTable::isDeclared(std::string key) {
     Table *tmp = table;
     while (tmp != nullptr) {
-        if (table->table.find(key) != table->table.end()) {
-            return true;
+        auto i = tmp->table.find(key);
+        if (i != tmp->table.end()) {
+            return i->second;
         }
         tmp = tmp->parent;
     }
-    return false;
+    return nullptr;
 }
 
 void SymbolTable::clear() {
@@ -47,16 +55,14 @@ void SymbolTable::clear() {
     table = new Table;
 }
 
-SymbolTable::~SymbolTable() {
-    delete table;
-    table = nullptr;
-
+VarSymbol *SymbolTable::getNewTempSymbol() {
+    std::string tmpName = "temp" + std::to_string(tmpPostFix++);
+    auto *tmp = new VarSymbol();
+    tmpTable.insert(std::map<std::string, VarSymbol *>::value_type(tmpName, tmp));
+    return tmp;
 }
 
-std::string SymbolTable::getNewTempSymbolName() {
-    std::string tmpName = "temp" + std::to_string(tmpPostFix++);
-    auto *tmp = new Symbol();
-    tmpTable.insert(std::map<std::string, Symbol *>::value_type(tmpName, tmp));
-    return tmpName;
+bool SymbolTable::isRoot() {
+    return table == root;
 }
 
