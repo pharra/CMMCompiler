@@ -307,6 +307,11 @@ Token *Lexer::getNext() {
             errorMessage = "ILLEGAL_NUMBER";
             isError = true;
         }
+        if (value.find('.') != -1) {
+            tokenTag = Token::REAL_VALUE;
+        } else {
+            tokenTag = Token::INT_VALUE;
+        }
     }
     return new Token(tokenTag, value, currentLine, currentColumn, errorMessage, isError);
 

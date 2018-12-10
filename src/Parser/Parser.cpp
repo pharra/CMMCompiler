@@ -286,7 +286,14 @@ TreeNode *Parser::parseForStmt() {
 TreeNode *Parser::parseReadStmt() {
     auto *node = new TreeNode(TreeNode::READ_STMT, popNextToken(Token::READ));
     node->push_back(parseCharacter(Token::LEFT_BRA));
-    node->push_back(parseVariableName());
+    auto varNode = parseVariableName();
+    node->push_back(varNode);
+    if (getNextTokenType() == Token::LEFT_INDEX) {
+        varNode->setIsArray(true);
+        varNode->push_back(parseCharacter(Token::LEFT_INDEX));
+        varNode->push_back(parseExp());
+        varNode->push_back(parseCharacter(Token::RIGHT_INDEX));
+    }
     node->push_back(parseCharacter(Token::RIGHT_BRA));
     node->push_back(parseCharacter(Token::SEMI));
     return node;
@@ -382,6 +389,7 @@ TreeNode *Parser::parseAssignStmt(bool isParseFor) {
     auto *varNode = parseVariableName();
     node->push_back(varNode);
     if (getNextTokenType() == Token::LEFT_INDEX) {
+        varNode->setIsArray(true);
         varNode->push_back(parseCharacter(Token::LEFT_INDEX));
         varNode->push_back(parseExp());
         varNode->push_back(parseCharacter(Token::RIGHT_INDEX));
@@ -413,6 +421,7 @@ TreeNode *Parser::parseStmtBlock() {
 
 TreeNode *Parser::parseExp() {
     auto *node = new TreeNode(TreeNode::EXP);
+    node->setDataType(Token::LOGIC_EXP);
     TreeNode *leftNode = parseAddtiveExp();
     Token::TokenTag types[6] = {Token::EQL, Token::NOT_EQL, Token::GRT, Token::GRT_EQL, Token::LES, Token::LES_EQL};
     if (checkNextTokenType(types, 6)) {
@@ -437,6 +446,7 @@ bool Parser::checkNextTokenType(Token::TokenTag *types, int size) {
 
 TreeNode *Parser::parseAddtiveExp() {
     auto *node = new TreeNode(TreeNode::EXP);
+    node->setDataType(Token::ADDTIVE_EXP);
     TreeNode *leftNode = parseTerm();
     Token::TokenTag types[2] = {Token::PLUS, Token::MINUS};
     if (checkNextTokenType(types, 2)) {
@@ -451,6 +461,7 @@ TreeNode *Parser::parseAddtiveExp() {
 
 TreeNode *Parser::parseTerm() {
     auto *node = new TreeNode(TreeNode::EXP);
+    node->setDataType(Token::TERM_EXP);
     TreeNode *leftNode = parseFactor();
     Token::TokenTag types[2] = {Token::MUL, Token::DIV};
     if (checkNextTokenType(types, 2)) {
@@ -467,7 +478,8 @@ TreeNode *Parser::parseFactor() {
     auto *node = new TreeNode(TreeNode::FACTOR);
     switch (getNextTokenType()) {
         case Token::CHAR_VALUE:
-        case Token::NUM:
+        case Token::INT_VALUE:
+        case Token::REAL_VALUE:
             node->push_back(parseLiteral());
             break;
         case Token::LEFT_BRA:
@@ -533,6 +545,7 @@ TreeNode *Parser::parseFunctionDeclare(bool isConstructor) {
     node->push_back(parseCharacter(Token::LEFT_BRA));
     Token::TokenTag types[4] = {Token::INT, Token::REAL, Token::CHAR, Token::CLASS_NAME};
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
+    _dataSize argIndex = 1;
     if (checkNextTokenType(types, 4)) {
         params->push_back(parseDeclareStmt(true));
         while (getNextTokenType() != Token::RIGHT_BRA) {
@@ -543,7 +556,11 @@ TreeNode *Parser::parseFunctionDeclare(bool isConstructor) {
                 Token::TokenTag forStep[] = {Token::COMMA, Token::RIGHT_BRA};
                 unParsered.push_back(stepUntilToken(forStep, 2));
             }
-            params->push_back(parseDeclareStmt(true));
+            auto* arg = parseDeclareStmt(true);
+            auto * regNode = new TreeNode(TreeNode::REG);
+            regNode->setValue("@ebp-" + std::to_string(argIndex));
+            arg->push_back(regNode);
+            params->push_back(arg);
         }
     }
     node->push_back(params);
