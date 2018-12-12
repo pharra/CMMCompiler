@@ -1,5 +1,5 @@
 //
-// Created by WF on 2018/9/6.
+// Created by chasi on 2018/9/6.
 //
 
 #ifndef CMMCOMPILER_READER_H
@@ -8,6 +8,7 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
 #define END_CHAR (char)(-1)
 
@@ -20,6 +21,8 @@ public:
     explicit Reader(std::string path);
 
     char getNextChar();
+
+    char readChar();
 
     void setBack();
 

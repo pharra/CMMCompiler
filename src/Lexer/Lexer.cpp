@@ -1,5 +1,5 @@
 //
-// Created by WF on 2018/9/7.
+// Created by chasi on 2018/9/7.
 //
 
 // 保留字：if、else、while、read、write、int、bool、real
@@ -36,6 +36,8 @@ typedef enum {
  * @param filePath 文件路径
  */
 Lexer::Lexer(std::string filePath) {
+    line = 1;
+    column = 1;
     reader = new Reader(std::move(filePath));
     regex = new Regex();
 }
@@ -106,7 +108,7 @@ Token *Lexer::getNext() {
         }
 
         // 忽略空格和\t
-        if (currentChar == ' ' || currentChar == '\t') {
+        if ((currentChar == ' ' || currentChar == '\t') && (tokenTag != Token::SIN_QUE && tokenTag != Token::DOU_QUE)) {
             if (tokenTag != Token::UNDEFINED) {
                 stateType = DONE;
             } else {
@@ -116,7 +118,7 @@ Token *Lexer::getNext() {
         }
 
         // 处理换行符
-        if (currentChar == '\n') {
+        if (currentChar == '\n' && (tokenTag != Token::SIN_QUE && tokenTag != Token::DOU_QUE)) {
             line += 1;
             column = 1;
             if (tokenTag != Token::UNDEFINED) {
@@ -180,11 +182,9 @@ Token *Lexer::getNext() {
             }
             if (currentChar == '\'') {
                 tokenTag = Token::SIN_QUE;
-                continue;
             }
             if (currentChar == '\"') {
                 tokenTag = Token::DOU_QUE;
-                continue;
             }
             if (currentChar == '.') {
                 tokenTag = Token::POINTER;
@@ -255,17 +255,23 @@ Token *Lexer::getNext() {
         }
             // 处理字符
         else if (tokenTag == Token::DOU_QUE) {
-            if (currentChar == '\"') {
+            if (currentChar == '\\') {
+                value.append(1, reader->readChar());
+            } else if (currentChar == '\"') {
                 stateType = DONE;
                 tokenTag = Token::CHAR_VALUE;
+                value.append(1, currentChar);
             } else {
                 value.append(1, currentChar);
                 continue;
             }
         } else if (tokenTag == Token::SIN_QUE) {
-            if (currentChar == '\'') {
+            if (currentChar == '\\') {
+                value.append(1, reader->readChar());
+            } else if (currentChar == '\'') {
                 stateType = DONE;
                 tokenTag = Token::CHAR_VALUE;
+                value.append(1, currentChar);
             } else {
                 value.append(1, currentChar);
                 continue;

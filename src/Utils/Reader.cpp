@@ -1,5 +1,5 @@
 //
-// Created by WF on 2018/9/6.
+// Created by chasi on 2018/9/6.
 //
 
 #include "Reader.h"
@@ -39,4 +39,19 @@ void Reader::setBack() {
         return;;
     }
     cur--;
+}
+
+char Reader::readChar() {
+    char a;
+    std::string ss = fileContent.substr(cur - 1, 2);
+    if (ss == "\\n") {
+        a = '\n';
+        cur++;
+    } else if (ss == "\\t") {
+        a = '\t';
+        cur++;
+    } else {
+        return fileContent[cur++];
+    }
+    return a;
 }
