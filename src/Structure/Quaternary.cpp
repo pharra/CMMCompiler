@@ -2,13 +2,14 @@
 // Created by chasi on 2018/12/3.
 //
 
+#include <sstream>
 #include "Quaternary.h"
 
 const std::string Quaternary::JMP = "jmp";
 const std::string Quaternary::READ = "read";
 const std::string Quaternary::WRITE = "write";
-const std::string Quaternary::_IN = "in";
-const std::string Quaternary::_OUT = "out";
+const std::string Quaternary::IN = "in";
+const std::string Quaternary::OUT = "out";
 const std::string Quaternary::INT = "int";
 const std::string Quaternary::REAL = "real";
 const std::string Quaternary::CHAR = "char";
@@ -26,6 +27,8 @@ const std::string Quaternary::EQ = "==";
 const std::string Quaternary::NEQ = "<>";
 const std::string Quaternary::CALL = "call";
 const std::string Quaternary::CALLFH = "callfh";
+const std::string Quaternary::RET = "ret";
+const std::string Quaternary::CLASS = "class";
 
 const std::string &Quaternary::getOp() const {
     return op;
@@ -69,4 +72,18 @@ Quaternary::Quaternary(const std::string &op,
 
 void Quaternary::setResult(unsigned long long int i) {
     result = std::to_string(i);
+}
+
+std::string Quaternary::toString() {
+    std::stringstream ss;
+    ss << " " << op << " " << arg1 << " " << arg2 << " " << result << "\n";
+    return ss.str();
+}
+
+_dataSize Quaternary::getLine() const {
+    return line;
+}
+
+void Quaternary::setLine(_dataSize line) {
+    Quaternary::line = line;
 }

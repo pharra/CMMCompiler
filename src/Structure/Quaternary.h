@@ -14,8 +14,8 @@ public:
     static const std::string JMP;
     static const std::string READ;
     static const std::string WRITE;
-    static const std::string _IN;
-    static const std::string _OUT;
+    static const std::string IN;
+    static const std::string OUT;
     static const std::string INT;
     static const std::string REAL;
     static const std::string CHAR;
@@ -33,9 +33,11 @@ public:
     static const std::string NEQ;
     static const std::string CALL;
     static const std::string CALLFH;
+    static const std::string RET;
+    static const std::string CLASS;
 
-    Quaternary(const std::string &op, const std::string &arg1, const std::string &arg2 = nullptr,
-               const std::string &result = nullptr, _dataSize line);
+    Quaternary(const std::string &op, const std::string &arg1, const std::string &arg2,
+               const std::string &result, _dataSize line);
 
     const std::string &getOp() const;
 
@@ -54,6 +56,12 @@ public:
     void setResult(const std::string &result);
 
     void setResult(unsigned long long int i);
+
+    std::string toString();
+
+    _dataSize getLine() const;
+
+    void setLine(_dataSize line);
 
 private:
     std::string op;
