@@ -20,6 +20,9 @@ std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
         {NEW_STMT,          "NEW_STMT"},
         {CLASS_DECLARE,     "CLASS_DECLARE"},
         {CLASS_CONSTRUCTOR, "CLASS_CONSTRUCTOR"},
+        {CLASS_ATTR,        "CLASS_ATTR"},
+        {CLASS_FUNCTION,    "CLASS_FUNCTION"},
+        {CLASS_CALL,        "CLASS_CALL"},
         {EXP,               "EXP"},
         {ARRAY,             "ARRAY"},
         {VAR,               "VAR"},
@@ -30,9 +33,12 @@ std::map<TreeNode::TreeNodeType, std::string> TreeNode::treeNodeTypeMap = {
         {LITERAL,           "LITERAL"},
         {ERROR_STEP,        "ERROR_STEP"},
         {PARAMS_STMT,       "PARAMS_STMT"},
+        {REG,               "REG"},
 };
 
 TreeNode::TreeNode(TreeNodeType type, Token *t) {
+    if (t == nullptr)
+        t = new Token();
     treeNodeType = type;
     value = t->getValue();
     line = t->getLine();
@@ -122,7 +128,7 @@ void TreeNode::setValue(const std::string &value) {
     TreeNode::value = value;
 }
 
-void TreeNode::setLine(int line) {
+void TreeNode::setLine(_dataSize line) {
     TreeNode::line = line;
 }
 
@@ -130,7 +136,7 @@ const std::string &TreeNode::getValue() const {
     return value;
 }
 
-int TreeNode::getLine() const {
+_dataSize TreeNode::getLine() const {
     return line;
 }
 

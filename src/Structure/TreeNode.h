@@ -5,9 +5,11 @@
 #ifndef CMMCOMPILER_TREENODE_H
 #define CMMCOMPILER_TREENODE_H
 
-#include "Token.h"
 #include <vector>
 #include <sstream>
+
+#include "Token.h"
+#include "Utils/Common.h"
 
 class TreeNode {
 public:
@@ -26,6 +28,9 @@ public:
         NEW_STMT,       // new语句
         CLASS_DECLARE,   // 类声明
         CLASS_CONSTRUCTOR, // 类构造器
+        CLASS_ATTR,       // 类属性
+        CLASS_FUNCTION,   // 类方法
+        CLASS_CALL,       // 类调用
         EXP,            // 表达式
         ARRAY,          //数组初始化
         VAR,            // 变量
@@ -36,6 +41,7 @@ public:
         LITERAL,        // 字面值
         ERROR_STEP,      // 跳过错误
         PARAMS_STMT,    // 参数声明，传入
+        REG,            // 寄存器
     };
 
     static std::map<TreeNodeType, std::string> treeNodeTypeMap;
@@ -48,7 +54,7 @@ public:
 
     const std::string &getValue() const;
 
-    int getLine() const;
+    _dataSize getLine() const;
 
     Token::TokenTag getDataType() const;
 
@@ -60,7 +66,7 @@ public:
 
     void setValue(const std::string &value);
 
-    void setLine(int line);
+    void setLine(_dataSize line);
 
     void removeCharacter();
 
@@ -86,10 +92,9 @@ private:
     std::string dataTypeValue;
     bool _isArray;
     std::string value;
-    int line;
+    _dataSize line;
     std::vector<TreeNode *> child;
     int level = 0;
-
 };
 
 
