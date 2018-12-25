@@ -12,6 +12,7 @@
 #include "VarSymbol.h"
 #include "FunctionSymbol.h"
 #include "Structure/TreeNode.h"
+#include "ClassSymbol.h"
 
 class SymbolTable {
 public:
@@ -25,11 +26,17 @@ public:
 
     bool insertVar(VarSymbol *symbol);
 
+    VarSymbol *getVarSymbol(std::string name);
+
     bool insertFunc(FunctionSymbol *symbol);
 
-    AbstractSymbol *isDeclared(std::string key);
+    FunctionSymbol *getFuncSymbol(std::string name);
 
-    VarSymbol *getNewTempSymbol();
+    bool insertClass(ClassSymbol *symbol);
+
+    ClassSymbol *getClassSymbol(std::string name);
+
+    std::string getNewTempSymbol();
 
     void clear();
 
@@ -39,11 +46,15 @@ public:
      */
     bool isRoot();
 
+    FunctionSymbol *getCurFuncSymbol();
+
+    VarSymbol *getCurVarSymbol();
+
 private:
     int tmpPostFix = 0;
 
     struct Table {
-        std::map<std::string, AbstractSymbol *> table;
+        std::map<std::string, VarSymbol *> table;
         Table *parent;
 
         Table() {
@@ -60,7 +71,9 @@ private:
     Table *root;
     std::map<std::string, VarSymbol *> tmpTable;
     std::map<std::string, FunctionSymbol *> funcTable;
-
+    std::map<std::string, ClassSymbol *> classTable;
+    FunctionSymbol *curFuncSymbol = nullptr;
+    VarSymbol *curVarSymbol = nullptr;
 };
 
 
