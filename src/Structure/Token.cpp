@@ -1,5 +1,5 @@
 //
-// Created by WF on 2018/9/6.
+// Created by chasi on 2018/9/6.
 //
 
 #include "Token.h"
@@ -21,9 +21,6 @@ std::map<Token::TokenTag, std::string> Token::tokenTagMap = {
         {INT,           "INT"},
         {REAL,          "REAL"},
         {CHAR,          "CHAR"},
-        {BREAK,         "BREAK"},
-        {SWITCH,        "SWITCH"},
-        {CASE,          "CASE"},
         {RETURN,        "RETURN"},
         {NEW,           "NEW"},
         {CLASS,         "CLASS"},
@@ -52,6 +49,7 @@ std::map<Token::TokenTag, std::string> Token::tokenTagMap = {
         {DOU_QUE,       "DOU_QUE"},
         {LINE_NOTE,     "LINE_NOTE"},
         {MUL_NOTE,      "MUL_NOTE"},
+        {POINTER,       "POINTER"},
 };
 
 Token::Token() {

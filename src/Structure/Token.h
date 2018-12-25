@@ -1,5 +1,5 @@
 //
-// Created by WF on 2018/9/6.
+// Created by chasi on 2018/9/6.
 //
 
 #ifndef CMMCOMPILER_TOKEN_H
@@ -40,9 +40,6 @@ public:
         INT,
         REAL,
         CHAR,
-        BREAK,
-        SWITCH,
-        CASE,
         RETURN,
         NEW,
         CLASS,
@@ -98,7 +95,11 @@ public:
         LINE_NOTE,
         // /* */
 
-        MUL_NOTE
+        MUL_NOTE,
+
+        LOGIC_EXP,
+        ADDTIVE_EXP,
+        TERM_EXP
     };
 
     Token();
