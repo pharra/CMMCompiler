@@ -168,6 +168,7 @@ TreeNode *Parser::parseStmt() {
         case Token::INT:
         case Token::REAL:
         case Token::CHAR:
+        case Token::CLASS_NAME:
             return parseDeclareStmt();
         case Token::LEFT_BOUNDER:
             return parseStmtBlock();
@@ -186,7 +187,8 @@ TreeNode *Parser::parseStmt() {
             return nullptr;
         default:
             errorLists.push_back(
-                    new ParserException("no expected Token", nextToken->getLine(), ParserException::NO_EXPECTED_TOKEN));
+                    new ParserException("no expected Token(in parseStmt)", nextToken->getLine(),
+                                        ParserException::NO_EXPECTED_TOKEN));
             unParsered.push_back(stepUntilTokenSEMI());
             return parseStmt();
     }
@@ -194,26 +196,36 @@ TreeNode *Parser::parseStmt() {
 
 TreeNode *Parser::parseClassDeclare() {
     auto *node = new TreeNode(TreeNode::CLASS_DECLARE, popNextToken(Token::CLASS));
+    auto *attrs = new TreeNode(TreeNode::CLASS_ATTR);
+    attrs->setLine(node->getLine());
+    auto *methods = new TreeNode(TreeNode::CLASS_FUNCTION);
+    methods->setLine(node->getLine());
     TreeNode *t = parseVariableName();
     const std::string &newClass = t->getValue();
     lexer->pushNewClass(newClass);
     // node->push_back(t);
     node->push_back(parseCharacter(Token::LEFT_BRA));
     node->push_back(parseCharacter(Token::RIGHT_BRA));
-    auto *blockNode = new TreeNode(TreeNode::BLOCK_STMT);
-    blockNode->push_back(parseCharacter(Token::LEFT_BOUNDER));
+    node->push_back(parseCharacter(Token::LEFT_BOUNDER));
     while (getNextTokenType() != Token::RIGHT_BOUNDER) {
         if (getNextTokenType() == Token::CLASS_NAME && nextToken->getValue() == newClass &&
             getNextNextTokenType() == Token::LEFT_BRA) {
             auto *classConstructorNode = parseFunctionDeclare(true);
             classConstructorNode->setDataTypeValue(newClass);
-            node->push_back(classConstructorNode);
+            methods->push_back(classConstructorNode);
             classConstructorNode->push_back(parseStmtBlock());
+        } else {
+            auto *declare = parseDeclareStmt();
+            if (declare->getChild()[0]->getTreeNodeType() == TreeNode::FUNCTION_DECLARE) {
+                methods->push_back(declare);
+            } else {
+                attrs->push_back(declare);
+            }
         }
-        blockNode->push_back(parseDeclareStmt());
     }
-    blockNode->push_back(parseCharacter(Token::RIGHT_BOUNDER));
-    node->push_back(blockNode);
+    node->push_back(attrs);
+    node->push_back(methods);
+    node->push_back(parseCharacter(Token::RIGHT_BOUNDER));
     return node;
 }
 
@@ -222,19 +234,23 @@ TreeNode *Parser::parseIfStmt() {
 
     node->push_back(parseCharacter(Token::LEFT_BRA));
     node->push_back(parseExp());
+    int line = nextToken->getLine();
     node->push_back(parseCharacter(Token::RIGHT_BRA));
     TreeNode *tmp = parseStmt();
     if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
         auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+        blockStmt->setLine(line);
         blockStmt->push_back(tmp);
         tmp = blockStmt;
     }
     node->push_back(tmp);
     if (getNextTokenType() == Token::ELSE) {
+        int line = nextToken->getLine();
         node->push_back(parseCharacter(Token::ELSE));
         tmp = parseStmt();
         if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
             auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+            blockStmt->setLine(line);
             blockStmt->push_back(tmp);
             tmp = blockStmt;
         }
@@ -251,6 +267,7 @@ TreeNode *Parser::parseWhileStmt() {
     TreeNode *tmp = parseStmt();
     if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
         auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+        blockStmt->setLine(tmp->getLine());
         blockStmt->push_back(tmp);
         tmp = blockStmt;
     }
@@ -276,6 +293,7 @@ TreeNode *Parser::parseForStmt() {
     TreeNode *tmp = parseStmt();
     if (tmp->getTreeNodeType() != TreeNode::BLOCK_STMT) {
         auto *blockStmt = new TreeNode(TreeNode::BLOCK_STMT);
+        blockStmt->setLine(tmp->getLine());
         blockStmt->push_back(tmp);
         tmp = blockStmt;
     }
@@ -333,6 +351,7 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
         array = true;
     }
     auto *node = new TreeNode(TreeNode::DECLARE_STMT);
+    node->setLine(nextToken->getLine());
 
     if (getNextNextTokenType() == Token::LEFT_BRA)    //函数声明
     {
@@ -352,7 +371,12 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
         if (getNextTokenType() == Token::ASSIGN) {
             node->push_back(parseCharacter(Token::ASSIGN));
             if (!varNode->isArray()) {
-                node->push_back(parseExp());
+                if (dataType == Token::CLASS_NAME) {
+                    auto classConstructor = parseFunctionCall(false);
+                    node->push_back(classConstructor);
+                } else {
+                    node->push_back(parseExp());
+                }
             } else {    //声明时初始化数组
                 if (getNextTokenType() == Token::CHAR_VALUE)   //如果是char[] = ""
                 {
@@ -360,11 +384,13 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
                 } else if (getNextTokenType() == Token::NEW) {
                     node->push_back(parseNewStmt());
                 } else {
+                    int line = nextToken->getLine();
                     node->push_back(parseCharacter(Token::LEFT_BOUNDER));
                     if (getNextTokenType() == Token::RIGHT_BOUNDER) {
                         node->push_back(parseCharacter(Token::RIGHT_BOUNDER));
                     } else {
                         auto *temp = new TreeNode(TreeNode::ARRAY);
+                        temp->setLine(line);
                         node->push_back(temp);
                         temp->push_back(parseExp());
                         while (getNextTokenType() == Token::COMMA) {
@@ -386,6 +412,7 @@ TreeNode *Parser::parseDeclareStmt(bool isParseFun) {
 
 TreeNode *Parser::parseAssignStmt(bool isParseFor) {
     auto *node = new TreeNode(TreeNode::ASSIGN_STMT);
+    node->setLine(nextToken->getLine());
     auto *varNode = parseVariableName();
     node->push_back(varNode);
     if (getNextTokenType() == Token::LEFT_INDEX) {
@@ -405,6 +432,7 @@ TreeNode *Parser::parseAssignStmt(bool isParseFor) {
 
 TreeNode *Parser::parseStmtBlock() {
     auto *node = new TreeNode(TreeNode::BLOCK_STMT);
+    node->setLine(nextToken->getLine());
     TreeNode *temp;
     node->push_back(parseCharacter(Token::LEFT_BOUNDER));
     while (getNextTokenType() != Token::RIGHT_BOUNDER) {
@@ -421,6 +449,7 @@ TreeNode *Parser::parseStmtBlock() {
 
 TreeNode *Parser::parseExp() {
     auto *node = new TreeNode(TreeNode::EXP);
+    node->setLine(nextToken->getLine());
     node->setDataType(Token::LOGIC_EXP);
     TreeNode *leftNode = parseAddtiveExp();
     Token::TokenTag types[6] = {Token::EQL, Token::NOT_EQL, Token::GRT, Token::GRT_EQL, Token::LES, Token::LES_EQL};
@@ -446,6 +475,7 @@ bool Parser::checkNextTokenType(Token::TokenTag *types, int size) {
 
 TreeNode *Parser::parseAddtiveExp() {
     auto *node = new TreeNode(TreeNode::EXP);
+    node->setLine(nextToken->getLine());
     node->setDataType(Token::ADDTIVE_EXP);
     TreeNode *leftNode = parseTerm();
     Token::TokenTag types[2] = {Token::PLUS, Token::MINUS};
@@ -461,6 +491,7 @@ TreeNode *Parser::parseAddtiveExp() {
 
 TreeNode *Parser::parseTerm() {
     auto *node = new TreeNode(TreeNode::EXP);
+    node->setLine(nextToken->getLine());
     node->setDataType(Token::TERM_EXP);
     TreeNode *leftNode = parseFactor();
     Token::TokenTag types[2] = {Token::MUL, Token::DIV};
@@ -476,6 +507,7 @@ TreeNode *Parser::parseTerm() {
 
 TreeNode *Parser::parseFactor() {
     auto *node = new TreeNode(TreeNode::FACTOR);
+    node->setLine(nextToken->getLine());
     switch (getNextTokenType()) {
         case Token::CHAR_VALUE:
         case Token::INT_VALUE:
@@ -493,10 +525,27 @@ TreeNode *Parser::parseFactor() {
             node->push_back(parseTerm());
             break;
         default:
-            if (getNextNextTokenType() == Token::LEFT_BRA)
-                node->push_back(parseFunctionCall(false));
-            else
-                node->push_back(parseVariableName());
+            TreeNode *varNode;
+            if (getNextNextTokenType() == Token::LEFT_BRA) {
+                varNode = parseFunctionCall(false);
+            } else if (getNextNextTokenType() == Token::LEFT_INDEX) {
+                varNode = parseVariableName();
+                varNode->setIsArray(true);
+                varNode->push_back(parseCharacter(Token::LEFT_INDEX));
+                varNode->push_back(parseExp());
+                varNode->push_back(parseCharacter(Token::RIGHT_INDEX));
+            } else {
+                varNode = parseVariableName();
+            }
+            if (getNextTokenType() == Token::POINTER) {
+                auto *tmp = varNode;
+                varNode = new TreeNode(TreeNode::CLASS_CALL);
+                varNode->setLine(nextToken->getLine());
+                varNode->push_back(parseCharacter(Token::POINTER));
+                varNode->push_back(tmp);
+                varNode->push_back(parseFactor());
+            }
+            node->push_back(varNode);
             break;
     }
     return node;
@@ -542,12 +591,19 @@ TreeNode *Parser::parseFunctionDeclare(bool isConstructor) {
     } else {
         node = new TreeNode(TreeNode::FUNCTION_DECLARE, popNextToken(Token::IDENTIFIER));
     }
+    int line = nextToken->getLine();
     node->push_back(parseCharacter(Token::LEFT_BRA));
     Token::TokenTag types[4] = {Token::INT, Token::REAL, Token::CHAR, Token::CLASS_NAME};
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
+    node->setLine(line);
     _dataSize argIndex = 1;
     if (checkNextTokenType(types, 4)) {
-        params->push_back(parseDeclareStmt(true));
+        auto *arg = parseDeclareStmt(true);
+        auto *regNode = new TreeNode(TreeNode::REG);
+        regNode->setLine(arg->getLine());
+        regNode->setValue("@ebp-" + std::to_string(argIndex));
+        arg->push_back(regNode);
+        params->push_back(arg);
         while (getNextTokenType() != Token::RIGHT_BRA) {
             params->push_back(parseCharacter(Token::COMMA));
             if (!checkNextTokenType(types, 4)) {
@@ -556,8 +612,9 @@ TreeNode *Parser::parseFunctionDeclare(bool isConstructor) {
                 Token::TokenTag forStep[] = {Token::COMMA, Token::RIGHT_BRA};
                 unParsered.push_back(stepUntilToken(forStep, 2));
             }
-            auto* arg = parseDeclareStmt(true);
-            auto * regNode = new TreeNode(TreeNode::REG);
+            auto *arg = parseDeclareStmt(true);
+            auto *regNode = new TreeNode(TreeNode::REG);
+            regNode->setLine(arg->getLine());
             regNode->setValue("@ebp-" + std::to_string(argIndex));
             arg->push_back(regNode);
             params->push_back(arg);
@@ -570,9 +627,12 @@ TreeNode *Parser::parseFunctionDeclare(bool isConstructor) {
 
 
 TreeNode *Parser::parseFunctionCall(bool isStmt) {
-    auto *node = new TreeNode(TreeNode::FUNCTION_CALL, popNextToken(Token::IDENTIFIER));
+    Token::TokenTag types[] = {Token::CLASS_NAME, Token::IDENTIFIER};
+    auto *node = new TreeNode(TreeNode::FUNCTION_CALL, popNextToken(types, 2));
+    int line = nextToken->getLine();
     node->push_back(parseCharacter(Token::LEFT_BRA));
     auto *params = new TreeNode(TreeNode::PARAMS_STMT);
+    params->setLine(line);
     if (getNextTokenType() != Token::RIGHT_BRA) {
         params->push_back(parseExp());
         while (getNextTokenType() != Token::RIGHT_BRA) {
@@ -588,7 +648,6 @@ TreeNode *Parser::parseFunctionCall(bool isStmt) {
     return node;
 }
 
-
 TreeNode *Parser::parseReturn() {
     auto *node = new TreeNode(TreeNode::RETURN_STMT, popNextToken(Token::RETURN));
     node->push_back(parseExp());
@@ -603,7 +662,7 @@ TreeNode *Parser::stepUntilTokenSEMI() {
         if (tmp == nullptr) {
             break;
         }
-        auto *t = new TreeNode(TreeNode::NUL, tmp);
+        auto *t = new TreeNode(TreeNode::NUL);
         root->push_back(t);
     }
     root->push_back(new TreeNode(TreeNode::NUL, popNextToken(Token::SEMI)));
