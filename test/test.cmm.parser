@@ -1,0 +1,110 @@
+>DECLARE_STMT
+  >FUNCTION_DECLARE(name: max , type: INT)
+    >PARAMS_STMT
+      >DECLARE_STMT
+        >VAR(name: a , type: INT)
+        >REG(name: @ebp-1 , type: UNDEFINED)
+      >DECLARE_STMT
+        >VAR(name: b , type: INT)
+        >REG(name: @ebp-1 , type: UNDEFINED)
+  >BLOCK_STMT
+    >IF_STMT(name: if , type: IF)
+      >EXP
+        >FACTOR
+          >VAR(name: a , type: IDENTIFIER)
+        >OP(name: > , type: GRT)
+        >FACTOR
+          >VAR(name: b , type: IDENTIFIER)
+      >BLOCK_STMT
+        >RETURN_STMT(name: return , type: RETURN)
+          >FACTOR
+            >VAR(name: a , type: IDENTIFIER)
+      >BLOCK_STMT
+        >RETURN_STMT(name: return , type: RETURN)
+          >FACTOR
+            >VAR(name: b , type: IDENTIFIER)
+>DECLARE_STMT
+  >FUNCTION_DECLARE(name: main , type: INT)
+    >PARAMS_STMT
+  >BLOCK_STMT
+    >DECLARE_STMT
+      >VAR(name: a , type: INT)
+    >DECLARE_STMT
+      >VAR(name: ccc , type: INT[])
+      >ARRAY
+        >FACTOR
+          >LITERAL(name: 1 , type: INT_VALUE)
+        >FACTOR
+          >LITERAL(name: 1 , type: INT_VALUE)
+    >READ_STMT(name: read , type: READ)
+      >VAR(name: a , type: IDENTIFIER)
+    >ASSIGN_STMT
+      >VAR(name: ccc , type: IDENTIFIER[])
+        >FACTOR
+          >LITERAL(name: 0 , type: INT_VALUE)
+      >FACTOR
+        >LITERAL(name: 2 , type: INT_VALUE)
+    >DECLARE_STMT
+      >VAR(name: c , type: INT)
+      >FACTOR
+        >FUNCTION_CALL(name: max , type: IDENTIFIER)
+          >PARAMS_STMT
+            >FACTOR
+              >VAR(name: a , type: IDENTIFIER)
+            >FACTOR
+              >LITERAL(name: 7 , type: INT_VALUE)
+    >WRITE_STMT(name: write , type: WRITE)
+      >FACTOR
+        >VAR(name: c , type: IDENTIFIER)
+    >WRITE_STMT(name: write , type: WRITE)
+      >FACTOR
+        >LITERAL(name: "
+" , type: CHAR_VALUE)
+    >ASSIGN_STMT
+      >VAR(name: a , type: IDENTIFIER)
+      >FACTOR
+        >LITERAL(name: 1 , type: INT_VALUE)
+    >FOR_STMT(name: for , type: FOR)
+      >DECLARE_STMT
+        >VAR(name: i , type: INT)
+        >FACTOR
+          >LITERAL(name: 3 , type: INT_VALUE)
+      >EXP
+        >FACTOR
+          >VAR(name: i , type: IDENTIFIER)
+        >OP(name: > , type: GRT)
+        >FACTOR
+          >LITERAL(name: 0 , type: INT_VALUE)
+      >ASSIGN_STMT
+        >VAR(name: i , type: IDENTIFIER)
+        >EXP
+          >FACTOR
+            >VAR(name: i , type: IDENTIFIER)
+          >OP(name: - , type: MINUS)
+          >FACTOR
+            >LITERAL(name: 1 , type: INT_VALUE)
+      >BLOCK_STMT
+        >WRITE_STMT(name: write , type: WRITE)
+          >FACTOR
+            >LITERAL(name: "for 
+" , type: CHAR_VALUE)
+    >WHILE_STMT(name: while , type: WHILE)
+      >EXP
+        >FACTOR
+          >VAR(name: a , type: IDENTIFIER)
+        >OP(name: <= , type: LES_EQL)
+        >FACTOR
+          >LITERAL(name: 3 , type: INT_VALUE)
+      >BLOCK_STMT
+        >WRITE_STMT(name: write , type: WRITE)
+          >FACTOR
+            >LITERAL(name: "while 
+" , type: CHAR_VALUE)
+        >ASSIGN_STMT
+          >VAR(name: a , type: IDENTIFIER)
+          >EXP
+            >FACTOR
+              >VAR(name: a , type: IDENTIFIER)
+            >OP(name: + , type: PLUS)
+            >FACTOR
+              >LITERAL(name: 1 , type: INT_VALUE)

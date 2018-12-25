@@ -1,47 +1,41 @@
-/*int a = 111;*/
-//ccc
-
-int a = 2;
-if(a < b) {
-    write(c);
-    read(a);
-    b = a;
-    while(a>3){
-    b = a;
-
-
- a = b ;
+/*class A(){
+A(){
+ a= 1;
 }
-}
-else{
-a=b;
-}
-a = func2(a);
-func();
-
-
-int func2(int a){
-return a;
-}
-
-int func(){
-int ca = ev;
-return ca;
-}
-
-a = func();
-int b = 111;
-int ev = 3;
-real d = 0;
-
-for (i = 0; i< 3;i = i + 1){
- int c= 0;
- int cc = 0;
-}
-
-while(a < 0){
- int c = 1;
-
-}
-
 int a;
+int func(){
+return 1;
+}
+}
+int main(){
+A a = A();
+write(a.a);
+write(a.func());
+}
+*/
+
+
+
+int max(int a,int b){
+	if(a>b)
+		return a;
+	else
+		return b;
+}
+int main(){
+	int a;
+	int[] ccc = {1,1};
+	read(a);
+	ccc[0] = 2;
+	int c = max(a,7);
+	write(c);
+	write("\n");
+	a = 1;
+	for(int i=3;i>0;i=i-1){
+		write("for \n");
+	}
+	while(a<=3){
+		write("while \n");
+		a=a+1;
+	}
+}

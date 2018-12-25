@@ -1,0 +1,62 @@
+0  int   max()
+1  in   
+2  int @ebp-1  a
+3  int @ebp-1  b
+4  > a b #T0
+5  jmp #T0  12
+6  in   
+7  assign a  @ebp-1
+8  out   
+9  jmp   17
+10  out   
+11  jmp   17
+12  in   
+13  assign b  @ebp-1
+14  out   
+15  jmp   17
+16  out   
+17  out   
+18  jmp   @ebp
+19  int   main()
+20  in   
+21  int   a
+22  array int 2 ccc
+23  assign 1  ccc[0]
+24  assign 1  ccc[1]
+25  read   a
+26  assign 2  ccc[0]
+27  assign 0  @esp
+28  assign 7  @esp
+29  assign a  @esp
+30  assign $268435588  @esp
+31  call   max
+32  jmp   1
+33  callfh   
+34  int @esp-1  c
+35  write   c
+36  write   "
+"
+37  assign 1  a
+38  in   
+39  int 3  i
+40  > i 0 #T1
+41  jmp #T1  49
+42  in   
+43  write   "for 
+"
+44  - i 1 #T2
+45  assign #T2  i
+46  out   
+47  jmp   40
+48  out   
+49  <= a 3 #T3
+50  jmp #T3  57
+51  in   
+52  write   "while 
+"
+53  + a 1 #T4
+54  assign #T4  a
+55  out   
+56  jmp   49
+57  out   
+58  jmp   @ebp
