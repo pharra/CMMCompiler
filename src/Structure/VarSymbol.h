@@ -12,8 +12,10 @@ public:
 
     VarSymbol();
 
-    VarSymbol(const std::string &name, SymbolType type, _dataSize line, _dataSize dataSize = 0,
+    VarSymbol(const std::string &name, SymbolType type, _dataSize line, int level,
               _dataSize _length = 0);
+
+    VarSymbol(_dataSize valueIndex, SymbolType type = SymbolType::REG);
 
     ~VarSymbol() override;
 
@@ -25,9 +27,14 @@ public:
 
     void setLength(_dataSize _length);
 
+    _dataSize getValueIndex() const;
+
+    void setValueIndex(_dataSize valueIndex);
+
 private:
     _dataSize dataSize;
     _dataSize _length;
+    _dataSize valueIndex;
 };
 
 
