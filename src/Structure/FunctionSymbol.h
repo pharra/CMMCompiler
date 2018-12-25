@@ -5,7 +5,7 @@
 #ifndef CMMCOMPILER_FUNCTIONSYMBOL_H
 #define CMMCOMPILER_FUNCTIONSYMBOL_H
 
-#include <map>
+#include <vector>
 #include <string>
 
 #include "AbstractSymbol.h"
@@ -21,10 +21,12 @@ public:
 
     void setReturnType(SymbolType returnType);
 
-    bool insertParam(VarSymbol *symbol);
+    void insertParam(SymbolType symbolType);
+
+    std::vector<SymbolType>& getParams();
 
 private:
-    std::map<std::string, VarSymbol *> paramTable;
+    std::vector<SymbolType> params;
 };
 
 

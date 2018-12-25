@@ -5,7 +5,7 @@
 #include "FunctionSymbol.h"
 
 FunctionSymbol::FunctionSymbol(const std::string &value, SymbolType type, _dataSize line) : AbstractSymbol(value, type,
-                                                                                                           line) {
+                                                                                                           line, 0) {
 
 }
 
@@ -17,20 +17,12 @@ void FunctionSymbol::setReturnType(SymbolType returnType) {
     setType(returnType);
 }
 
-bool FunctionSymbol::insertParam(VarSymbol *symbol) {
-    if (paramTable.find(symbol->getName()) != paramTable.end()) {
-        return false;
-    }
-    paramTable.insert(std::map<std::string, VarSymbol *>::value_type(symbol->getName(),
-                                                                     symbol));
-    return true;
+void FunctionSymbol::insertParam(SymbolType symbolType) {
+    params.push_back(symbolType);
 }
 
-FunctionSymbol::~FunctionSymbol() {
-    for (auto &i : paramTable) {
-        delete i.second;
-        i.second = nullptr;
-    }
+FunctionSymbol::~FunctionSymbol() = default;
 
-    paramTable.clear();
+std::vector<SymbolType> &FunctionSymbol::getParams() {
+    return params;
 }
