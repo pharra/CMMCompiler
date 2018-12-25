@@ -7,9 +7,10 @@
 AbstractSymbol::AbstractSymbol() = default;
 
 AbstractSymbol::AbstractSymbol(const std::string &name,
-                               SymbolType type, _dataSize line) : name(name),
-                                                                  type(type),
-                                                                  line(line) {
+                               SymbolType type, _dataSize line, int level) : name(name),
+                                                                             type(type),
+                                                                             line(line),
+                                                                             level(level) {
 }
 
 SymbolType AbstractSymbol::getType() const {
@@ -34,4 +35,12 @@ _dataSize AbstractSymbol::getLine() const {
 
 void AbstractSymbol::setLine(_dataSize line) {
     AbstractSymbol::line = line;
+}
+
+int AbstractSymbol::getLevel() const {
+    return level;
+}
+
+void AbstractSymbol::setLevel(int level) {
+    AbstractSymbol::level = level;
 }

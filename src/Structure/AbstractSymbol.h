@@ -2,8 +2,8 @@
 // Created by chasi on 2018/11/26.
 //
 
-#ifndef CMMCOMPILER_RECORD_H
-#define CMMCOMPILER_RECORD_H
+#ifndef CMMCOMPILER_ABSTRACTSYMBOL_H
+#define CMMCOMPILER_ABSTRACTSYMBOL_H
 
 #include "Utils/Common.h"
 #include "Structure/Token.h"
@@ -13,9 +13,9 @@ public:
 
     AbstractSymbol();
 
-    AbstractSymbol(const std::string &name, SymbolType type, _dataSize line);
+    AbstractSymbol(const std::string &name, SymbolType type, _dataSize line, int level);
 
-    virtual ~AbstractSymbol() = 0;
+    virtual ~AbstractSymbol() = default;
 
     const std::string &getName() const;
 
@@ -29,13 +29,19 @@ public:
 
     void setLine(_dataSize line);
 
+    int getLevel() const;
+
+    void setLevel(int level);
+
 private:
     std::string name;
 
     SymbolType type;
 
-    _dataSize line;
+    _dataSize line = 0;
+
+    int level = 0;
 };
 
 
-#endif //CMMCOMPILER_RECORD_H
+#endif //CMMCOMPILER_ABSTRACTSYMBOL_H
