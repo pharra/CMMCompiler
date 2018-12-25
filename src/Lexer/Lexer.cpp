@@ -19,9 +19,6 @@ std::map<std::string, Token::TokenTag> Lexer::keywordMap = {{"if",     Token::IF
                                                             {"int",    Token::INT},
                                                             {"real",   Token::REAL},
                                                             {"char",   Token::CHAR},
-                                                            {"break",  Token::BREAK},
-                                                            {"switch", Token::SWITCH},
-                                                            {"case",   Token::CASE},
                                                             {"return", Token::RETURN},
                                                             {"new",    Token::NEW},
                                                             {"class",  Token::CLASS}};
@@ -279,7 +276,7 @@ Token *Lexer::getNext() {
         }
             // 处理标识符
         else if (tokenTag == Token::IDENTIFIER) {
-            if (specialChar.find(currentChar) != -1) {
+            if (specialChar.find(currentChar) != -1 || currentChar == '.') {
                 stateType = DONE;
                 reader->setBack();
             } else {
